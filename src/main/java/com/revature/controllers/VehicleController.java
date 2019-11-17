@@ -34,7 +34,7 @@ public class VehicleController {
 		return vehicleService.getVehicle(id);
 	}
 	
-	@GetMapping("{/userId")
+	@GetMapping("/user{/userId}")
 	public List<Vehicle> getUserVehicles(@PathVariable int userId){
 		return vehicleService.getUserVehicles(userId);
 	}
