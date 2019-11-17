@@ -1,10 +1,10 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:  application:    name: Project2-Backend
   # Database Credentials
-  datasource:    username: ${BTU}
-    password: ${BTP}
+  datasource:    username: ${Pirate_Login}
+    password: ${Pirate_PW}
     url: jdbc:postgresql://localhost:5432/postgres
   # hbm2ddl 
   jpa:
