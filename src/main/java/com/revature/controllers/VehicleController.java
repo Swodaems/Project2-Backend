@@ -34,11 +34,7 @@ public class VehicleController {
 		return vehicleService.getVehicle(id);
 	}
 	
-<<<<<<< HEAD
 	@GetMapping("/user{/userId}")
-=======
-	@GetMapping("/{userId}")
->>>>>>> 2c002164a95cc0290dcd9e630c5778ef5ff57344
 	public List<Vehicle> getUserVehicles(@PathVariable int userId){
 		return vehicleService.getUserVehicles(userId);
 	}
