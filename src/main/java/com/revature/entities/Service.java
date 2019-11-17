@@ -31,8 +31,19 @@ public class Service {
 	@ManyToOne
 	@JoinColumn(name="vehicle_id")
 	private Vehicle vehicle;
+	private String receipt;
 	
 	
+	public String getReceipt() {
+		return receipt;
+	}
+
+
+	public void setReceipt(String receipt) {
+		this.receipt = receipt;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
