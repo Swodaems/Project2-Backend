@@ -18,6 +18,7 @@ public class Vehicle {
 	private String name;
 	private int year;
 	private String model;
+	private String make;
 	private String color;
 	private double mileage;
 	@ManyToOne
@@ -31,6 +32,12 @@ public class Vehicle {
 	private List<Service> services;
 	private String photo;
 	
+	public String getMake() {
+		return make;
+	}
+	public void setMake(String make) {
+		this.make = make;
+	}
 	public String getPhoto() {
 		return photo;
 	}

@@ -13,7 +13,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.Vehicle;
 import com.revature.repositories.VehicleRepository;
-
 @Service
 public class VehicleService {
 	

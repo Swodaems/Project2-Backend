@@ -34,8 +34,17 @@ public class User {
 	@OneToMany
 	@JoinColumn(name="user_id")
 	private List<Service> services;
+	@OneToMany
+	@JoinColumn(name="user_id")
+	private List<Vehicle> vehicles;
 	
 	
+	public List<Vehicle> getVehicles() {
+		return vehicles;
+	}
+	public void setVehicles(List<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
 	public String getFirstName() {
 		return firstName;
 	}

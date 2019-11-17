@@ -6,9 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Repository;
-
 import com.revature.entities.Vehicle;
-
 @Repository
 public class VehicleRepository {
 
