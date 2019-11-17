@@ -29,12 +29,12 @@ public class VehicleController {
 		this.vehicleService = vehicleService;
 	}
 	
-	@GetMapping("{/id}")
+	@GetMapping("/{id}")
 	public Vehicle getVehicle(@PathVariable int id) {
 		return vehicleService.getVehicle(id);
 	}
 	
-	@GetMapping("/user{/userId}")
+	@GetMapping("/user/{userId}")
 	public List<Vehicle> getUserVehicles(@PathVariable int userId){
 		return vehicleService.getUserVehicles(userId);
 	}

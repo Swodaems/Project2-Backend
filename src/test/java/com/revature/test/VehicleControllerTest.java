@@ -1,3 +1,4 @@
+package com.revature.test;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -5,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -21,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +73,7 @@ public class VehicleControllerTest {
 	}
 	
 	@Test
-	public void getByUserId() throws JsonProcessingException, Exception {
+	public void getUserVehicles() throws JsonProcessingException, Exception {
 		int id = 1;
 		Vehicle vehicle = new Vehicle();
 		vehicle.setName("My Jeep");
@@ -82,7 +85,7 @@ public class VehicleControllerTest {
 		vehicle.setModel("Cherokee");
 		vehicle.setYear(1989);
 		
-		List<Vehicle> vehicles = null;
+		List<Vehicle> vehicles = new ArrayList<>();
 		
 		vehicles.add(vehicle);
 		vehicles.add(vehicle2);
@@ -92,7 +95,7 @@ public class VehicleControllerTest {
 
 		this.mockMvc.perform(get("/vehicles/user/" + id))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
-				.andExpect(content().json(om.writeValueAsString(vehicle)))
+				.andExpect(content().json(om.writeValueAsString(vehicles)))
 				.andExpect(status().is(HttpStatus.OK.value()));
 	}
 	
@@ -121,6 +124,24 @@ public class VehicleControllerTest {
 			.andExpect(status().isCreated())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(content().json(om.writeValueAsString(returnedVehicle)));
+	}
+	
+	@Test
+	public void getByIdNotFound() throws Exception {
+		int id = 1;
+		Vehicle vehicle = new Vehicle();
+		vehicle.setName("My Jeep");
+		vehicle.setYear(2001);
+		vehicle.setModel("Cherokee");
+		vehicle.setColor("Green");
+		
+		// Stubbing the implementation of the getAuthorsById method
+		when(mockVehicleService.getVehicle(1))
+			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		this.mockMvc.perform(get("/vehicles/" + id))
+			.andDo(print())
+			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
 }
