@@ -1,7 +1,5 @@
 package com.revature.controllers;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +12,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Vehicle;
-import com.revature.services.VehicleService;
+import com.revature.entities.Company;
+import com.revature.services.CompanyService;
 
 @RestController
-@RequestMapping("vehicles")
-public class VehicleController {
-	
-	VehicleService vehicleService;
-
+@RequestMapping("company")
+public class CompanyController {
+	CompanyService companyService;
 	@Autowired
-	public VehicleController(VehicleService vehicleService) {
+	public CompanyController(CompanyService companyService) {
 		super();
-		this.vehicleService = vehicleService;
-	}
-	
+		this.companyService = companyService;
+	}	
+
 	@GetMapping("/{id}")
-	public Vehicle getVehicle(@PathVariable int id) {
-		return vehicleService.getVehicle(id);
+	public Company getCompany(@PathVariable int id) {
+		return companyService.getCompanyById(id);
 	}
-	
-	@GetMapping("/{userId}")
-	public List<Vehicle> getUserVehicles(@PathVariable int userId){
-		return vehicleService.getUserVehicles(userId);
-	}
-	
+
+
+
+
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Vehicle createVehicle(@RequestBody @Valid Vehicle vehicle) {
-		return vehicleService.createVehicle(vehicle);
+	public Company createCompany(@RequestBody @Valid Company company) {
+		return companyService.createCompany(company);
 	}
-
 }

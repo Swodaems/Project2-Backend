@@ -23,6 +23,8 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
+	private String salt;
+	private String photo;
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
@@ -33,6 +35,31 @@ public class User {
 	@JoinColumn(name="user_id")
 	private List<Service> services;
 	
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 	public List<Service> getServices() {
 		return services;
 	}

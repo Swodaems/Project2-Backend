@@ -29,7 +29,14 @@ public class Vehicle {
 	@OneToMany
 	@JoinColumn(name="vehicle_id")
 	private List<Service> services;
+	private String photo;
 	
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 	public List<Service> getServices() {
 		return services;
 	}
