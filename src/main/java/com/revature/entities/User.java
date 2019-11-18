@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name="customers")
 public class User {
@@ -21,12 +26,16 @@ public class User {
 	private String firstName;
 	@Column(name="last_name")
 	private String lastName;
+	@Column(nullable = false, unique = true)
 	private String email;
+	@NotEmpty
 	private String password;
 	private String salt;
 	private String photo;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="role_id")
+	@JsonBackReference
+	//@JsonManagedReference
 	private Role role;
 	@ManyToOne
 	@JoinColumn(name="company_id")

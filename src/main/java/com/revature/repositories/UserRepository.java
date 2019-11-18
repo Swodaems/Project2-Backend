@@ -7,11 +7,13 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
+
 
 
 @Repository
@@ -27,9 +29,9 @@ public class UserRepository {
 		if (user == null) 
 			return Optional.empty();
 		
-		List<Vehicle> books = user.getVehicles();
-		Hibernate.initialize(books);
-		return Optional.of(books);
+		List<Vehicle> vehicles = user.getVehicles();
+		Hibernate.initialize(vehicles);
+		return Optional.of(vehicles);
 	}
 
 
@@ -42,5 +44,13 @@ public class UserRepository {
 	public Optional<User> getById(int id) {
 		Session session = em.unwrap(Session.class);
 		return Optional.ofNullable(session.get(User.class, id));
+	}
+	public Optional<User> getByEmail(String email){
+		Session session = em.unwrap(Session.class);
+		String hql = "from User u where u.email like :email";
+		User user = session.createQuery(hql, User.class)
+				.setParameter("email", email, StringType.INSTANCE)
+				.getSingleResult();
+		return Optional.ofNullable(user);
 	}
 }
