@@ -140,7 +140,6 @@ public class VehicleControllerTest {
 			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		
 		this.mockMvc.perform(get("/vehicles/" + id))
-			.andDo(print())
 			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 

@@ -7,10 +7,11 @@ import javax.validation.Valid;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.revature.entities.ServiceReport;
-import com.revature.entities.Vehicle;
 
+@Repository
 public class ServiceReportRepository {
 	
 	@Autowired(required=true)

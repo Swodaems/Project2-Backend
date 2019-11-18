@@ -97,12 +97,18 @@ public class ServiceReportControllerTest {
 		serviceReport.setName("Injected blinker fluid");
 		serviceReport.setCost(420.69);
 		
-		when(mockServiceReportService.updateServiceReport(serviceReport))
-			.thenReturn(serviceReport);
+		ServiceReport returnedServiceReport = new ServiceReport();
+		returnedServiceReport.setName(serviceReport.getName());
+		returnedServiceReport.setCost(serviceReport.getCost());
 		
-		this.mockMvc.perform(put("/servicereports/"))
+		when(mockServiceReportService.updateServiceReport(serviceReport))
+			.thenReturn(returnedServiceReport);
+		
+		this.mockMvc.perform(put("/servicereports/")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(om.writeValueAsString(serviceReport)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
-				.andExpect(content().json(om.writeValueAsString(serviceReport)))
+				.andExpect(content().json(om.writeValueAsString(returnedServiceReport)))
 				.andExpect(status().is(HttpStatus.OK.value()));
 	}
 	
@@ -112,10 +118,12 @@ public class ServiceReportControllerTest {
 		serviceReport.setName("Injected blinker fluid");
 		serviceReport.setCost(420.69);
 		
-		when(mockServiceReportService.updateServiceReport(serviceReport))
+		when(mockServiceReportService.deleteServiceReport(serviceReport))
 			.thenReturn(serviceReport);
 		
-		this.mockMvc.perform(delete("/servicereports/"))
+		this.mockMvc.perform(delete("/servicereports/")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(om.writeValueAsString(serviceReport)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(serviceReport)))
 				.andExpect(status().is(HttpStatus.OK.value()));

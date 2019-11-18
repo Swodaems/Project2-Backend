@@ -41,9 +41,9 @@ public class VehicleController {
 		return vehicleService.getUserVehicles(userId);
 	}
 	
-	@PostMapping("")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
+	public Vehicle createVehicle(@RequestBody @Valid Vehicle vehicle) {
 		return vehicleService.createVehicle(vehicle);
 	}
 	
