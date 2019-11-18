@@ -73,7 +73,7 @@ public class VehicleControllerTest {
 	}
 	
 	@Test
-	public void getUserVehicles() throws JsonProcessingException, Exception {
+	public void testGetUserVehicles() throws JsonProcessingException, Exception {
 		int id = 1;
 		Vehicle vehicle = new Vehicle();
 		vehicle.setName("My Jeep");
@@ -140,7 +140,6 @@ public class VehicleControllerTest {
 			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		
 		this.mockMvc.perform(get("/vehicles/" + id))
-			.andDo(print())
 			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 

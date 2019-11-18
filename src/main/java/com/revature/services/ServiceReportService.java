@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.ServiceReport;
-import com.revature.entities.Vehicle;
 import com.revature.repositories.ServiceReportRepository;
+
 @Service
 public class ServiceReportService {
 	

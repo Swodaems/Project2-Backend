@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.xml.bind.DatatypeConverter;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -80,6 +82,7 @@ public class UserService {
 		return optionalUser.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
+
 	public User login(Credentials credentials) {
 		Optional<User> optionalUser= 
 				userRepository.getByEmail(credentials.getEmail());
@@ -127,4 +130,15 @@ public class UserService {
 	    //return salt
 	    return salt;
 	}
+
+	@Transactional
+	public User updateUser(@Valid User user) {
+		return userRepository.update(user);
+	}
+
+	@Transactional
+	public User deleteUser(@Valid User user) {
+		return userRepository.delete(user);
+	}
+
 }

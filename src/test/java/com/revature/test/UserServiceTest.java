@@ -1,4 +1,5 @@
 package com.revature.test;
+
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
@@ -18,19 +19,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.entities.User;
 import com.revature.entities.Vehicle;
-import com.revature.repositories.VehicleRepository;
-import com.revature.services.VehicleService;
+import com.revature.repositories.UserRepository;
+import com.revature.services.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class VehicleServiceTest {
-
+public class UserServiceTest {
+	
 	@Mock
-	private VehicleRepository mockVehicleRepository;
+	private UserRepository mockUserRepository;
 	
 	@InjectMocks
-	private VehicleService vehicleService;
+	private UserService userService;
 	
 	@Before
 	public void setup() {
@@ -40,48 +42,48 @@ public class VehicleServiceTest {
 	@Test
 	public void testGetByIdHappyPath() {
 		int id = 5;
-		Vehicle vehicle = new Vehicle();
+		User user = new User();
 		
-		when(mockVehicleRepository.getById(id))
-			.thenReturn(Optional.of(vehicle));
+		when(mockUserRepository.getById(id))
+			.thenReturn(Optional.of(user));
 		
-		Vehicle returnedVehicle = vehicleService.getVehicle(id);
+		User returnedUser = userService.getUser(id);
 		
-		assertSame("Vehicle returns optional with same vehicle that repository provides", 
-				vehicle, returnedVehicle);
+		assertSame("User returns optional with same User that repository provides", 
+				user, returnedUser);
 		
-		verify(mockVehicleRepository).getById(id);
+		verify(mockUserRepository).getById(id);
 	}
 	
 	@Test(expected = HttpClientErrorException.class)
 	public void testGetByIdNotFound() {
 		int id = 5;
 		
-		when(mockVehicleRepository.getById(id))
+		when(mockUserRepository.getById(id))
 			.thenReturn(Optional.empty());
 		
-		vehicleService.getVehicle(id);
+		userService.getUser(id);
 		
 		fail("Exception should have been thrown due to empty optional");
 	}
 	
 	@Test
-	public void testCreateVehicle() {
-		Vehicle vehicle = new Vehicle();
-		vehicle.setName("My Jeep");
-		vehicle.setYear(2001);
-		vehicle.setModel("Cherokee");
-		vehicle.setColor("Green");
+	public void testCreateUser() {
+		User user = new User();
+		user.setFirstName("Corey");
+		user.setLastName("Sch");
+		user.setEmail("coreysch@test.com");
+		user.setPassword("testingpassword");
 		
-		when(mockVehicleRepository.create(vehicle))
-			.thenReturn(vehicle);
+		when(mockUserRepository.create(user))
+			.thenReturn(user);
 		
-		Vehicle returnedVehicle = vehicleService.createVehicle(vehicle);
+		User returnedUser = userService.createUser(user);
 		
 		assertSame("Vehicle returns same vehicle the repository provides", 
-				vehicle, returnedVehicle);
+				user, returnedUser);
 		
-		verify(mockVehicleRepository).create(vehicle);
+		verify(mockUserRepository).create(user);
 	}
 	
 	@Test
@@ -103,53 +105,53 @@ public class VehicleServiceTest {
 		userVehicles.add(vehicle);
 		userVehicles.add(vehicle2);
 		
-		when(mockVehicleRepository.getByUserId(id))
+		when(mockUserRepository.getVehiclesByUserId(id))
 			.thenReturn(Optional.of(userVehicles));
 		
-		List<Vehicle> returnedVehicles = vehicleService.getUserVehicles(id);
+		List<Vehicle> returnedVehicles = userService.getVehiclesByUserId(id);
 		
 		assertSame("Vehicle returns optional with same vehicle that repository provides", 
 				userVehicles, returnedVehicles);
 		
-		verify(mockVehicleRepository).getByUserId(id);
+		verify(mockUserRepository).getVehiclesByUserId(id);
 	}
 	
 	@Test
-	public void testUpdateVehicle() {
-		Vehicle vehicle = new Vehicle();
-		vehicle.setName("My Jeep");
-		vehicle.setYear(2001);
-		vehicle.setModel("Cherokee");
-		vehicle.setColor("Green");
+	public void testUpdateUser() {
+		User user = new User();
+		user.setFirstName("Corey");
+		user.setLastName("Sch");
+		user.setEmail("coreysch@test.com");
+		user.setPassword("testingpassword");
 		
-		when(mockVehicleRepository.update(vehicle))
-			.thenReturn(vehicle);
+		when(mockUserRepository.update(user))
+			.thenReturn(user);
 		
-		Vehicle returnedVehicle = vehicleService.updateVehicle(vehicle);
+		User returnedUser = userService.updateUser(user);
 		
 		assertSame("Vehicle returns same vehicle the repository provides", 
-				vehicle, returnedVehicle);
+				user, returnedUser);
 		
-		verify(mockVehicleRepository).update(vehicle);
+		verify(mockUserRepository).update(user);
 	}
 	
 	@Test
-	public void testDeleteVehicle() {
-		Vehicle vehicle = new Vehicle();
-		vehicle.setName("My Jeep");
-		vehicle.setYear(2001);
-		vehicle.setModel("Cherokee");
-		vehicle.setColor("Green");
+	public void testDeleteUser() {
+		User user = new User();
+		user.setFirstName("Corey");
+		user.setLastName("Sch");
+		user.setEmail("coreysch@test.com");
+		user.setPassword("testingpassword");
 		
-		when(mockVehicleRepository.delete(vehicle))
-			.thenReturn(vehicle);
+		when(mockUserRepository.delete(user))
+			.thenReturn(user);
 		
-		Vehicle returnedVehicle = vehicleService.deleteVehicle(vehicle);
+		User returnedUser = userService.deleteUser(user);
 		
 		assertSame("Vehicle returns same vehicle the repository provides", 
-				vehicle, returnedVehicle);
+				user, returnedUser);
 		
-		verify(mockVehicleRepository).delete(vehicle);
+		verify(mockUserRepository).delete(user);
 	}
-	
+
 }

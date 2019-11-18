@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -45,6 +46,7 @@ public class UserRepository {
 		Session session = em.unwrap(Session.class);
 		return Optional.ofNullable(session.get(User.class, id));
 	}
+	
 	public Optional<User> getByEmail(String email){
 		Session session = em.unwrap(Session.class);
 		String hql = "from User u where u.email like :email";
@@ -52,5 +54,19 @@ public class UserRepository {
 				.setParameter("email", email, StringType.INSTANCE)
 				.getSingleResult();
 		return Optional.ofNullable(user);
+	}
+
+
+	public User update(@Valid User user) {
+		Session session = em.unwrap(Session.class);
+		session.update(user);
+		return user;
+	}
+
+
+	public User delete(@Valid User user) {
+		Session session = em.unwrap(Session.class);
+		session.delete(user);
+		return user;
 	}
 }
