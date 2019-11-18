@@ -3,6 +3,8 @@ package com.revature.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,16 @@ public class UserService {
 				userRepository.getById(id);
 		return optionalUser.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
+
+	@Transactional
+	public User updateUser(@Valid User user) {
+		return userRepository.update(user);
+	}
+
+	@Transactional
+	public User deleteUser(@Valid User user) {
+		return userRepository.delete(user);
 	}
 
 }

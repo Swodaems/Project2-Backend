@@ -73,7 +73,7 @@ public class VehicleControllerTest {
 	}
 	
 	@Test
-	public void getUserVehicles() throws JsonProcessingException, Exception {
+	public void testGetUserVehicles() throws JsonProcessingException, Exception {
 		int id = 1;
 		Vehicle vehicle = new Vehicle();
 		vehicle.setName("My Jeep");

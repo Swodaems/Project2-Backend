@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -42,5 +43,19 @@ public class UserRepository {
 	public Optional<User> getById(int id) {
 		Session session = em.unwrap(Session.class);
 		return Optional.ofNullable(session.get(User.class, id));
+	}
+
+
+	public User update(@Valid User user) {
+		Session session = em.unwrap(Session.class);
+		session.update(user);
+		return user;
+	}
+
+
+	public User delete(@Valid User user) {
+		Session session = em.unwrap(Session.class);
+		session.delete(user);
+		return user;
 	}
 }
