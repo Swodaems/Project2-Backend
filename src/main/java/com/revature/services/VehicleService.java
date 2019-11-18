@@ -43,4 +43,14 @@ public class VehicleService {
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
 
+	@Transactional
+	public Vehicle updateVehicle(@Valid Vehicle vehicle) {
+		return vehicleRepository.update(vehicle);
+	}
+
+	@Transactional
+	public Vehicle deleteVehicle(@Valid Vehicle vehicle) {
+		return vehicleRepository.delete(vehicle);
+	}
+
 }

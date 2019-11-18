@@ -19,13 +19,13 @@ public class ServiceType {
 	private String name;
 	@OneToMany
 	@JoinColumn(name="type_id")
-	private List<Service> services;
+	private List<ServiceReport> serviceReports;
 	
-	public List<Service> getServices() {
-		return services;
+	public List<ServiceReport> getServices() {
+		return serviceReports;
 	}
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setServices(List<ServiceReport> serviceReports) {
+		this.serviceReports = serviceReports;
 	}
 	public int getId() {
 		return id;

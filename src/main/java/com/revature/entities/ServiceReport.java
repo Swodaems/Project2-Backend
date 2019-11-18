@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="services")
-public class Service {
+public class ServiceReport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -71,7 +71,7 @@ public class Service {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Service other = (Service) obj;
+		ServiceReport other = (ServiceReport) obj;
 		if (Double.doubleToLongBits(cost) != Double.doubleToLongBits(other.cost))
 			return false;
 		if (id != other.id)
@@ -123,13 +123,13 @@ public class Service {
 	}
 
 
-	public Service() {
+	public ServiceReport() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public Service(int id, String name, ServiceType type, double cost, LocalDateTime time, String technicianNote,
+	public ServiceReport(int id, String name, ServiceType type, double cost, LocalDateTime time, String technicianNote,
 			String userNote, Vehicle vehicle, User user) {
 		super();
 		this.id = id;

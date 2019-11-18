@@ -33,7 +33,7 @@ public class User {
 	private Company company;
 	@OneToMany
 	@JoinColumn(name="user_id")
-	private List<Service> services;
+	private List<ServiceReport> serviceReports;
 	@OneToMany
 	@JoinColumn(name="user_id")
 	private List<Vehicle> vehicles;
@@ -69,11 +69,11 @@ public class User {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-	public List<Service> getServices() {
-		return services;
+	public List<ServiceReport> getServices() {
+		return serviceReports;
 	}
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setServices(List<ServiceReport> serviceReports) {
+		this.serviceReports = serviceReports;
 	}
 	public int getId() {
 		return id;

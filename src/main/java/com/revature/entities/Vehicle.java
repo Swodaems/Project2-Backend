@@ -29,7 +29,7 @@ public class Vehicle {
 	private Insurance insurance;
 	@OneToMany
 	@JoinColumn(name="vehicle_id")
-	private List<Service> services;
+	private List<ServiceReport> serviceReports;
 	private String photo;
 	
 	public String getMake() {
@@ -44,11 +44,11 @@ public class Vehicle {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-	public List<Service> getServices() {
-		return services;
+	public List<ServiceReport> getServices() {
+		return serviceReports;
 	}
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setServices(List<ServiceReport> serviceReports) {
+		this.serviceReports = serviceReports;
 	}
 	public int getId() {
 		return id;
