@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.revature.entities.ServiceReport;
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 @Repository
@@ -52,6 +53,18 @@ public class VehicleRepository {
 		Session session = em.unwrap(Session.class);
 		session.delete(vehicle);
 		return vehicle;
+	}
+
+	public Optional<List<ServiceReport>> getVehicleServiceReports(int id) {
+		Session session = em.unwrap(Session.class);
+		Vehicle vehicle = session.get(Vehicle.class, id);
+		
+		if (vehicle == null) 
+			return Optional.empty();
+		
+		List<ServiceReport> serviceReports = vehicle.getServices();
+		Hibernate.initialize(serviceReports);
+		return Optional.of(serviceReports);
 	}
 
 }

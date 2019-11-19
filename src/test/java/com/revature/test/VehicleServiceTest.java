@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
 import com.revature.repositories.VehicleRepository;
 import com.revature.services.VehicleService;
@@ -112,6 +113,33 @@ public class VehicleServiceTest {
 				userVehicles, returnedVehicles);
 		
 		verify(mockVehicleRepository).getByUserId(id);
+	}
+	
+	@Test
+	public void testGetVehicleServiceReportsHappyPath() {
+		int id = 5;
+		ServiceReport serviceReport = new ServiceReport();
+		serviceReport.setName("Injected blinker fluid");
+		serviceReport.setCost(420.69);
+		
+		ServiceReport serviceReport2 = new ServiceReport();
+		serviceReport.setName("Replaced grill with googly eyes");
+		serviceReport.setCost(3.49);
+		
+		List<ServiceReport> serviceReports = new ArrayList<>();
+		
+		serviceReports.add(serviceReport);
+		serviceReports.add(serviceReport2);
+		
+		when(mockVehicleRepository.getVehicleServiceReports(id))
+			.thenReturn(Optional.of(serviceReports));
+		
+		List<ServiceReport> returnedServiceReports = vehicleService.getVehicleServiceReports(id);
+		
+		assertSame("Service reports returns optional with same service reports that repository provides", 
+				serviceReports, returnedServiceReports);
+		
+		verify(mockVehicleRepository).getVehicleServiceReports(id);
 	}
 	
 	@Test

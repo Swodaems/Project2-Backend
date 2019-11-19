@@ -23,11 +23,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.ServiceReportController;
 import com.revature.entities.ServiceReport;
+import com.revature.entities.User;
 import com.revature.services.ServiceReportService;
 
 @RunWith(SpringRunner.class)
@@ -127,6 +129,18 @@ public class ServiceReportControllerTest {
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(serviceReport)))
 				.andExpect(status().is(HttpStatus.OK.value()));
+	}
+	
+	@Test
+	public void getByIdNotFound() throws Exception {
+		int id = 1;
+		
+		// Stubbing the implementation of the getAuthorsById method
+		when(mockServiceReportService.getServiceReportById(1))
+			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		this.mockMvc.perform(get("/servicereports/" + id))
+			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 	
 }
