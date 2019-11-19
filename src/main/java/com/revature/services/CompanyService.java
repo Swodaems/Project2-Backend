@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.Company;
-import com.revature.entities.Vehicle;
 import com.revature.repositories.CompanyRepository;
 
 @Service

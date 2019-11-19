@@ -34,7 +34,7 @@ public class User {
 	private String photo;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="role_id")
-	@JsonBackReference
+	//@JsonBackReference
 	//@JsonManagedReference
 	private Role role;
 	@ManyToOne

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Company;
-import com.revature.entities.Vehicle;
 import com.revature.services.CompanyService;
 
 @RestController

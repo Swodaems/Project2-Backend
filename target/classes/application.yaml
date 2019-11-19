@@ -1,12 +1,13 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:  application:    name: Project2-Backend
   # Database Credentials
-  datasource:    username: ${PG_User}
-    password: ${PG_PW}
+  datasource:    username: ${BTU}
+    password: ${BTP}
     url: jdbc:postgresql://localhost:5432/postgres
   # hbm2ddl 
+  jackson:    serialization:      fail-on-empty-beans: false
   jpa:
     properties:
       hibernate:

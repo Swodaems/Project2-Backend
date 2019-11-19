@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.entities.ServiceReport;
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.models.Credentials;
@@ -46,6 +47,10 @@ public class UserController {
 	@GetMapping("/{id}/vehicles")
 	public List<Vehicle> getUserVehicles(@PathVariable int id) {
 		return userService.getVehiclesByUserId(id);
+	}
+	@GetMapping("/{id}/servicereports")
+	public List<ServiceReport> getUserServiceReports(@PathVariable int id) {
+		return userService.getServiceReportsByUserId(id);
 	}
 	
 	@PostMapping("")

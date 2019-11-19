@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.entities.ServiceReport;
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.models.Credentials;
@@ -75,7 +76,12 @@ public class UserService {
 		return optionalVehicles.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
-
+	public List<ServiceReport> getServiceReportsByUserId(int id) {
+		Optional<List<ServiceReport>> optionalServiceReports = 
+					userRepository.getServiceReportsByUserId(id);
+		return optionalServiceReports.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
 	public User getUser(int id) {
 		Optional<User> optionalUser = 
 				userRepository.getById(id);
