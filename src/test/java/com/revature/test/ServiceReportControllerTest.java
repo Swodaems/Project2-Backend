@@ -27,9 +27,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.ServiceReportController;
 import com.revature.entities.ServiceReport;
-import com.revature.entities.User;
 import com.revature.services.ServiceReportService;
 
 @RunWith(SpringRunner.class)
@@ -51,7 +51,9 @@ public class ServiceReportControllerTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(serviceReportController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(serviceReportController)
+				.setControllerAdvice(new ExceptionHandlerAdvisor())
+				.build();
 	}
 	
 	@Test

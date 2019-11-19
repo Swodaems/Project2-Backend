@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.revature.entities.Company;
-import com.revature.entities.User;
 
 @Repository
 public class CompanyRepository {

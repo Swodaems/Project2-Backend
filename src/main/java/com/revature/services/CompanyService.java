@@ -1,7 +1,5 @@
 package com.revature.services;
 
-import java.awt.print.Book;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.Company;
-import com.revature.entities.Vehicle;
 import com.revature.repositories.CompanyRepository;
 
 @Service

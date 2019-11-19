@@ -27,6 +27,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.VehicleController;
 import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
@@ -53,7 +54,9 @@ public class VehicleControllerTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(vehicleController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(vehicleController)
+				.setControllerAdvice(new ExceptionHandlerAdvisor())
+				.build();
 	}
 
 	@Test

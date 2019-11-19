@@ -30,8 +30,8 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.UserController;
-import com.revature.entities.ServiceReport;
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.services.UserService;
@@ -55,7 +55,9 @@ public class UserControllerTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(userController)
+				.setControllerAdvice(new ExceptionHandlerAdvisor())
+				.build();
 	}
 	
 	@Test
