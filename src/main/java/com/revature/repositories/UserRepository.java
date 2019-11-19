@@ -1,5 +1,6 @@
 package com.revature.repositories;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.revature.entities.ServiceReport;
 import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 
@@ -33,6 +35,21 @@ public class UserRepository {
 		List<Vehicle> vehicles = user.getVehicles();
 		Hibernate.initialize(vehicles);
 		return Optional.of(vehicles);
+	}
+	public Optional<List<ServiceReport>> getServiceReportsByUserId(int id) {
+		Session session = em.unwrap(Session.class);
+		User user = session.get(User.class, id);
+		
+		if (user == null) 
+			return Optional.empty();
+		
+		List<Vehicle> vehicles = user.getVehicles();
+		List<ServiceReport> services= new ArrayList<>();
+		for(Vehicle v:vehicles) {
+			services.addAll(v.getServices());
+		}
+		Hibernate.initialize(services);
+		return Optional.of(services);
 	}
 
 
