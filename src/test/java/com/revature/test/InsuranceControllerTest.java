@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -121,6 +122,18 @@ public class InsuranceControllerTest {
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(insurance)))
 				.andExpect(status().is(HttpStatus.OK.value()));
+	}
+	
+	@Test
+	public void getByIdNotFound() throws Exception {
+		int id = 1;
+		
+		// Stubbing the implementation of the getAuthorsById method
+		when(mockInsuranceService.getInsurance(1))
+			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		this.mockMvc.perform(get("/insurance/" + id))
+			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 
 }

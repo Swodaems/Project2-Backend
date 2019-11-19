@@ -116,6 +116,18 @@ public class UserServiceTest {
 		verify(mockUserRepository).getVehiclesByUserId(id);
 	}
 	
+	@Test(expected = HttpClientErrorException.class)
+	public void testGetUserVehiclesNotFound() {
+		int id = 5;
+		
+		when(mockUserRepository.getVehiclesByUserId(id))
+			.thenReturn(Optional.empty());
+		
+		userService.getVehiclesByUserId(id);
+		
+		fail("Exception should have been thrown due to empty optional");
+	}
+	
 	@Test
 	public void testUpdateUser() {
 		User user = new User();

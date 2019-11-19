@@ -28,6 +28,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.VehicleController;
+import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
 import com.revature.services.VehicleService;
 
@@ -100,6 +101,57 @@ public class VehicleControllerTest {
 	}
 	
 	@Test
+	public void getByUserIdNotFound() throws Exception {
+		int id = 1;
+		
+		// Stubbing the implementation of the getAuthorsById method
+		when(mockVehicleService.getUserVehicles(1))
+			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		this.mockMvc.perform(get("/vehicles/user/" + id))
+			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
+	}
+	
+	@Test
+	public void testGetVehicleServiceReports() throws JsonProcessingException, Exception {
+		int id = 1;
+		ServiceReport serviceReport = new ServiceReport();
+		serviceReport.setName("Injected blinker fluid");
+		serviceReport.setCost(420.69);
+		
+		ServiceReport serviceReport2 = new ServiceReport();
+		serviceReport.setName("Replaced grill with googly eyes");
+		serviceReport.setCost(3.49);
+		
+		List<ServiceReport> serviceReports = new ArrayList<>();
+		
+		serviceReports.add(serviceReport);
+		serviceReports.add(serviceReport2);
+		
+		// Stubbing getVehicle
+		when(mockVehicleService.getVehicleServiceReports(id)).thenReturn(serviceReports);
+
+		this.mockMvc.perform(get("/vehicles/" + id + "/servicereports")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(om.writeValueAsString(serviceReports)))
+				.andExpect(content().contentTypeCompatibleWith("application/json"))
+				.andExpect(content().json(om.writeValueAsString(serviceReports)))
+				.andExpect(status().is(HttpStatus.OK.value()));
+	}
+	
+	@Test
+	public void getVehicleServiceReportsNotFound() throws Exception {
+		int id = 1;
+		
+		// Stubbing the implementation of the getAuthorsById method
+		when(mockVehicleService.getVehicleServiceReports(1))
+			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+		
+		this.mockMvc.perform(get("/vehicles/" + id + "/servicereports"))
+			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
+	}
+	
+	@Test
 	public void createVehicleTest() throws JsonProcessingException, Exception {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setName("My Jeep");
@@ -129,11 +181,6 @@ public class VehicleControllerTest {
 	@Test
 	public void getByIdNotFound() throws Exception {
 		int id = 1;
-		Vehicle vehicle = new Vehicle();
-		vehicle.setName("My Jeep");
-		vehicle.setYear(2001);
-		vehicle.setModel("Cherokee");
-		vehicle.setColor("Green");
 		
 		// Stubbing the implementation of the getAuthorsById method
 		when(mockVehicleService.getVehicle(1))
