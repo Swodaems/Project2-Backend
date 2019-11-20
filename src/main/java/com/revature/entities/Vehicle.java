@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Vehicle {
 	@Id
@@ -23,6 +25,7 @@ public class Vehicle {
 	private double mileage;
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnore
 	private User user;
 	@ManyToOne
 	@JoinColumn(name="insurance_id")

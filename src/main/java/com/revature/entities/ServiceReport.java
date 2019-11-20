@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="services")
@@ -30,8 +32,14 @@ public class ServiceReport {
 	private String userNote;
 	@ManyToOne
 	@JoinColumn(name="vehicle_id")
+	@JsonIgnore
 	private Vehicle vehicle;
 	private String receipt;
+	//Is this meant to represent the technician
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	@JsonIgnore
+	private User user;
 	
 	
 	public String getReceipt() {
@@ -144,10 +152,6 @@ public class ServiceReport {
 	}
 
 
-	//Is this meant to represent the technician
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
 
 
 	public int getId() {
