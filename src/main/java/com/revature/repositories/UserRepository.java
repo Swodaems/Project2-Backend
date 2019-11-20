@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 
 import org.hibernate.Hibernate;
@@ -66,10 +67,13 @@ public class UserRepository {
 	
 	public Optional<User> getByEmail(String email){
 		Session session = em.unwrap(Session.class);
+		User user = new User();
 		String hql = "from User u where u.email like :email";
-		User user = session.createQuery(hql, User.class)
-				.setParameter("email", email, StringType.INSTANCE)
-				.getSingleResult();
+		try {
+			user = session.createQuery(hql, User.class)
+					.setParameter("email", email, StringType.INSTANCE)
+					.getSingleResult();
+		} catch (NoResultException e) { return null; }
 		return Optional.ofNullable(user);
 	}
 
