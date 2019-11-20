@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Insurance {
 	@Id
@@ -20,6 +22,7 @@ public class Insurance {
 	
 	@OneToMany
 	@JoinColumn(name="insurance_id")
+	@JsonIgnore
 	private List<Vehicle> vehicles;
 	
 	public List<Vehicle> getVehicles() {

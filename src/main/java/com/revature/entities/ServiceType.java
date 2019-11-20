@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="service_type")
 public class ServiceType {
@@ -19,6 +21,7 @@ public class ServiceType {
 	private String name;
 	@OneToMany
 	@JoinColumn(name="type_id")
+	@JsonIgnore
 	private List<ServiceReport> serviceReports;
 	
 	public List<ServiceReport> getServices() {

@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="customers")
 public class User {
@@ -27,7 +29,9 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 	@NotEmpty
+	@JsonIgnore
 	private String password;
+	@JsonIgnore
 	private String salt;
 	private String photo;
 	@ManyToOne(fetch=FetchType.LAZY)
