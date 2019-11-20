@@ -58,8 +58,9 @@ public class UserController {
 
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public User login(@RequestBody Credentials credentials) {
-		return userService.login(credentials);
+	public String login(@RequestBody Credentials credentials) {
+		String token = userService.login(credentials);
+		return token;
 	}
 	
 	@PutMapping

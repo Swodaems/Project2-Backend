@@ -21,6 +21,7 @@ import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.models.Credentials;
 import com.revature.repositories.UserRepository;
+import com.revature.util.AuthUtil;
 
 
 @Service
@@ -89,13 +90,16 @@ public class UserService {
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
 
-	public User login(Credentials credentials) {
+	public String login(Credentials credentials) {
 		Optional<User> optionalUser= 
 				userRepository.getByEmail(credentials.getEmail());
-		return authenticate(credentials.getPassword(), optionalUser.orElseThrow(
+		if(optionalUser == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		User user = authenticate(credentials.getPassword(), optionalUser.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.FORBIDDEN)));
 		
+		return AuthUtil.generateToken(user);
 	}
+	
 	public User authenticate(String password, User user) {
 		String generatedPassword = null;
         try {
