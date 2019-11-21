@@ -30,7 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.InsuranceController;
 import com.revature.entities.Insurance;
+import com.revature.models.Creds;
 import com.revature.services.InsuranceService;
+import com.revature.util.AuthUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,6 +43,9 @@ public class InsuranceControllerTest {
 	
 	@Mock
 	InsuranceService mockInsuranceService;
+	
+	@Mock
+	private AuthUtil mockAuthUtil;
 	
 	@InjectMocks
 	InsuranceController insuranceController;
@@ -54,7 +59,18 @@ public class InsuranceControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(insuranceController)
 				.setControllerAdvice(new ExceptionHandlerAdvisor())
 				.build();
+		
+		String jwt = "faketoken";
+
+		Creds cred = new Creds();
+		cred.setEmail("fake@email.com");
+		cred.setId(1);
+		cred.setRole("customer");
+
+		when(mockAuthUtil.parseJWT(jwt)).thenReturn(cred);
 	}
+	
+	String jwt = "faketoken";
 	
 	@Test
 	public void testCreateInsuranceHappyPath() throws JsonProcessingException, Exception {
@@ -67,7 +83,7 @@ public class InsuranceControllerTest {
 		when(mockInsuranceService.createInsurance(insurance))
 			.thenReturn(returnedInsurance);
 		
-		this.mockMvc.perform(post("/insurance/")
+		this.mockMvc.perform(post("/insurance/").header("Authorization", jwt)
 				// Include the request data
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(insurance)))
@@ -86,7 +102,7 @@ public class InsuranceControllerTest {
 		when(mockInsuranceService.getInsurance(id))
 			.thenReturn(insurance);
 		
-		this.mockMvc.perform(get("/insurance/" + id))
+		this.mockMvc.perform(get("/insurance/" + id).header("Authorization", jwt))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(insurance)))
 				.andExpect(status().is(HttpStatus.OK.value()));
@@ -103,7 +119,7 @@ public class InsuranceControllerTest {
 		when(mockInsuranceService.updateInsurance(insurance))
 			.thenReturn(returnedInsurance);
 		
-		this.mockMvc.perform(put("/insurance/")
+		this.mockMvc.perform(put("/insurance/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(insurance)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -119,7 +135,7 @@ public class InsuranceControllerTest {
 		when(mockInsuranceService.deleteInsurance(insurance))
 			.thenReturn(insurance);
 		
-		this.mockMvc.perform(delete("/insurance/")
+		this.mockMvc.perform(delete("/insurance/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(insurance)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -135,7 +151,7 @@ public class InsuranceControllerTest {
 		when(mockInsuranceService.getInsurance(1))
 			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		
-		this.mockMvc.perform(get("/insurance/" + id))
+		this.mockMvc.perform(get("/insurance/" + id).header("Authorization", jwt))
 			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 

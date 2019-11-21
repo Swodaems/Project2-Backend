@@ -34,23 +34,25 @@ import com.revature.util.AuthUtil;
 public class UserController {
 	
 	UserService userService;
+	AuthUtil authUtil;
 	
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, AuthUtil authUtil) {
 		super();
 		this.userService = userService;
+		this.authUtil = authUtil;
 	}	
 	
 	@GetMapping("/test")
 	public void test(@RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		System.out.println(token);
 	}
 
 	@GetMapping("/user")
 	public User getUser(@RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		
 		return userService.getUser(cred	.getId());
@@ -58,14 +60,14 @@ public class UserController {
 
 	@GetMapping("/{id}/vehicles")
 	public List<Vehicle> getUserVehicles(@PathVariable int id, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return userService.getVehiclesByUserId(id);
 	}
 	
 	@GetMapping("/{id}/servicereports")
 	public List<ServiceReport> getUserServiceReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return userService.getServiceReportsByUserId(id);
 	}
@@ -85,14 +87,14 @@ public class UserController {
 	
 	@PutMapping
 	public User updateUSer(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return userService.updateUser(user);
 	}
 	
 	@DeleteMapping
 	public User deleteUser(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return userService.deleteUser(user);
 	}

@@ -45,7 +45,7 @@ public class VehicleRepository {
 
 	public Vehicle update(@Valid Vehicle vehicle) {
 		Session session = em.unwrap(Session.class);
-		session.update(vehicle);
+		session.merge(vehicle);
 		return vehicle;
 	}
 
