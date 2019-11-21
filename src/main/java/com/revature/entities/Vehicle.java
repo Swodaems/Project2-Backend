@@ -34,97 +34,43 @@ public class Vehicle {
 	@OneToMany
 	@JoinColumn(name="vehicle_id")
 	private List<ServiceReport> serviceReports;
+	private String VIN;
 	private String photo;
 	
-	public String getMake() {
-		return make;
-	}
-	public void setMake(String make) {
-		this.make = make;
-	}
-	public String getPhoto() {
-		return photo;
-	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
-	public List<ServiceReport> getServices() {
-		return serviceReports;
-	}
-	public void setServices(List<ServiceReport> serviceReports) {
-		this.serviceReports = serviceReports;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public int getYear() {
-		return year;
-	}
-	public void setYear(int year) {
-		this.year = year;
-	}
-	public String getModel() {
-		return model;
-	}
-	public void setModel(String model) {
-		this.model = model;
-	}
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
-	}
-	public double getMileage() {
-		return mileage;
-	}
-	public void setMileage(double mileage) {
-		this.mileage = mileage;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public Insurance getInsurance() {
-		return insurance;
-	}
-	public void setInsurance(Insurance insurance) {
-		this.insurance = insurance;
-	}
-	public Vehicle(int id, String name, int year, String model, String make, String color, double mileage, User user,
-			Insurance insurance, List<ServiceReport> serviceReports, String photo) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.year = year;
-		this.model = model;
-		this.make = make;
-		this.color = color;
-		this.mileage = mileage;
-		this.user = user;
-		this.insurance = insurance;
-		this.serviceReports = serviceReports;
-		this.photo = photo;
-	}
 	public Vehicle() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Vehicle(int id, String name, int year, String model, String make, String color, double mileage, User user,
+			Insurance insurance, List<ServiceReport> serviceReports, String vIN, String photo) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.year = year;
+		this.model = model;
+		this.make = make;
+		this.color = color;
+		this.mileage = mileage;
+		this.user = user;
+		this.insurance = insurance;
+		this.serviceReports = serviceReports;
+		VIN = vIN;
+		this.photo = photo;
+	}
+	
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", name=" + name + ", year=" + year + ", model=" + model + ", make=" + make
+				+ ", color=" + color + ", mileage=" + mileage + ", user=" + user + ", insurance=" + insurance
+				+ ", serviceReports=" + serviceReports + ", VIN=" + VIN + ", photo=" + photo + "]";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((VIN == null) ? 0 : VIN.hashCode());
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((insurance == null) ? 0 : insurance.hashCode());
@@ -140,6 +86,7 @@ public class Vehicle {
 		result = prime * result + year;
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -149,6 +96,11 @@ public class Vehicle {
 		if (getClass() != obj.getClass())
 			return false;
 		Vehicle other = (Vehicle) obj;
+		if (VIN == null) {
+			if (other.VIN != null)
+				return false;
+		} else if (!VIN.equals(other.VIN))
+			return false;
 		if (color == null) {
 			if (other.color != null)
 				return false;
@@ -197,11 +149,78 @@ public class Vehicle {
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "Vehicle [id=" + id + ", name=" + name + ", year=" + year + ", model=" + model + ", make=" + make
-				+ ", color=" + color + ", mileage=" + mileage + ", user=" + user + ", insurance=" + insurance
-				+ ", serviceReports=" + serviceReports + ", photo=" + photo + "]";
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public String getMake() {
+		return make;
+	}
+	public void setMake(String make) {
+		this.make = make;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public double getMileage() {
+		return mileage;
+	}
+	public void setMileage(double mileage) {
+		this.mileage = mileage;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public Insurance getInsurance() {
+		return insurance;
+	}
+	public void setInsurance(Insurance insurance) {
+		this.insurance = insurance;
+	}
+	public List<ServiceReport> getServiceReports() {
+		return serviceReports;
+	}
+	public void setServiceReports(List<ServiceReport> serviceReports) {
+		this.serviceReports = serviceReports;
+	}
+	public String getVIN() {
+		return VIN;
+	}
+	public void setVIN(String vIN) {
+		VIN = vIN;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	
 	

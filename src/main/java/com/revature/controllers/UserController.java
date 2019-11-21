@@ -41,7 +41,7 @@ public class UserController {
 		super();
 		this.userService = userService;
 		this.authUtil = authUtil;
-	}	
+	}
 	
 	@GetMapping("/test")
 	public void test(@RequestHeader("Authorization") String token) {
@@ -62,7 +62,7 @@ public class UserController {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		
-		return userService.getUser(cred	.getId());
+		return userService.getUser(cred.getId());
 	}
 
 	@GetMapping("/{id}/vehicles")

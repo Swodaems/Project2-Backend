@@ -54,7 +54,6 @@ public class AuthUtil {
 			cred.setRole(jws.getBody().get("role").toString());
 			cred.setId(Integer.parseInt(jws.getBody().get("id").toString()));
 			System.out.println("we can trust this jwt");
-			// we can safely trust the JWT
 		} catch (JwtException ex) {
 			System.out.println("cant trust this jwt");
 			return null;
