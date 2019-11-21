@@ -53,7 +53,7 @@ public class UserController {
 		Creds cred = AuthUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		
-		return userService.getUser(cred.getId());
+		return userService.getUser(cred	.getId());
 	}
 
 	@GetMapping("/{id}/vehicles")

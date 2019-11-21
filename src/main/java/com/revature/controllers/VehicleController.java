@@ -65,11 +65,7 @@ public class VehicleController {
 	public Vehicle createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = AuthUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-<<<<<<< HEAD
-=======
-        System.out.println(vehicle);
->>>>>>> corey
-        vehicle.setUser(userService.getUser(cred.getId()));
+        	vehicle.setUser(userService.getUser(cred.getId()));
         return vehicleService.createVehicle(vehicle);
 	}
 	
