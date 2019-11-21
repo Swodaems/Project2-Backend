@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ import com.revature.util.AuthUtil;
 
 @RestController
 @RequestMapping("user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 	
 	UserService userService;
@@ -46,12 +48,12 @@ public class UserController {
 		System.out.println(token);
 	}
 
-	@GetMapping("/{id}")
-	public User getUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
+	@GetMapping("/user")
+	public User getUser(@RequestHeader("Authorization") String token) {
 		Creds cred = AuthUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		
-		return userService.getUser(id);
+		return userService.getUser(cred.getId());
 	}
 
 	@GetMapping("/{id}/vehicles")
