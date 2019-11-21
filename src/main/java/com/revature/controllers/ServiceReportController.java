@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.ServiceReport;
+import com.revature.models.Creds;
 import com.revature.services.ServiceReportService;
+import com.revature.util.AuthUtil;
 
 @RestController
 @RequestMapping("/servicereports/")
@@ -31,23 +35,31 @@ public class ServiceReportController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ServiceReport createServiceReport(@RequestBody @Valid ServiceReport serviceReport) {
-		return serviceReportService.createServiceReport(serviceReport);
+	public ServiceReport createServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+		Creds cred = AuthUtil.parseJWT(token);
+        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        return serviceReportService.createServiceReport(serviceReport);
 	}
 	
 	@PutMapping
-	public ServiceReport updateServiceReport(@RequestBody @Valid ServiceReport serviceReport) {
-		return serviceReportService.updateServiceReport(serviceReport);
+	public ServiceReport updateServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+		Creds cred = AuthUtil.parseJWT(token);
+        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        return serviceReportService.updateServiceReport(serviceReport);
 	}
 	
 	@GetMapping("/{id}")
-	public ServiceReport getServiceReportById(@PathVariable int id) {
-		return serviceReportService.getServiceReportById(id);
+	public ServiceReport getServiceReportById(@RequestHeader("Authorization") String token,@PathVariable int id) {
+		Creds cred = AuthUtil.parseJWT(token);
+        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        return serviceReportService.getServiceReportById(id);
 	}
 	
 	@DeleteMapping
-	public ServiceReport deleteServiceReport(@RequestBody @Valid ServiceReport serviceReport) {
-		return serviceReportService.deleteServiceReport(serviceReport);
+	public ServiceReport deleteServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+		Creds cred = AuthUtil.parseJWT(token);
+        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        return serviceReportService.deleteServiceReport(serviceReport);
 	}
 	
 }
