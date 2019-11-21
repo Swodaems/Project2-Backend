@@ -30,7 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.ServiceReportController;
 import com.revature.entities.ServiceReport;
+import com.revature.models.Creds;
 import com.revature.services.ServiceReportService;
+import com.revature.util.AuthUtil;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
@@ -41,6 +43,9 @@ public class ServiceReportControllerTest {
 	
 	@Mock
 	ServiceReportService mockServiceReportService;
+	
+	@Mock
+	private AuthUtil mockAuthUtil;
 	
 	@InjectMocks
 	ServiceReportController serviceReportController;
@@ -54,7 +59,18 @@ public class ServiceReportControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(serviceReportController)
 				.setControllerAdvice(new ExceptionHandlerAdvisor())
 				.build();
+		
+		String jwt = "faketoken";
+
+		Creds cred = new Creds();
+		cred.setEmail("fake@email.com");
+		cred.setId(1);
+		cred.setRole("customer");
+
+		when(mockAuthUtil.parseJWT(jwt)).thenReturn(cred);
 	}
+	
+	String jwt = "faketoken";
 	
 	@Test
 	public void testCreateServiceReportHappyPath() throws JsonProcessingException, Exception {
@@ -69,7 +85,7 @@ public class ServiceReportControllerTest {
 		when(mockServiceReportService.createServiceReport(serviceReport))
 			.thenReturn(returnedServiceReport);
 		
-		this.mockMvc.perform(post("/servicereports/")
+		this.mockMvc.perform(post("/servicereports/").header("Authorization", jwt)
 				// Include the request data
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(serviceReport)))
@@ -89,7 +105,7 @@ public class ServiceReportControllerTest {
 		when(mockServiceReportService.getServiceReportById(id))
 			.thenReturn(serviceReport);
 		
-		this.mockMvc.perform(get("/servicereports/" + id))
+		this.mockMvc.perform(get("/servicereports/" + id).header("Authorization", jwt))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(serviceReport)))
 				.andExpect(status().is(HttpStatus.OK.value()));
@@ -108,7 +124,7 @@ public class ServiceReportControllerTest {
 		when(mockServiceReportService.updateServiceReport(serviceReport))
 			.thenReturn(returnedServiceReport);
 		
-		this.mockMvc.perform(put("/servicereports/")
+		this.mockMvc.perform(put("/servicereports/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(serviceReport)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -125,7 +141,7 @@ public class ServiceReportControllerTest {
 		when(mockServiceReportService.deleteServiceReport(serviceReport))
 			.thenReturn(serviceReport);
 		
-		this.mockMvc.perform(delete("/servicereports/")
+		this.mockMvc.perform(delete("/servicereports/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(serviceReport)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -141,7 +157,7 @@ public class ServiceReportControllerTest {
 		when(mockServiceReportService.getServiceReportById(1))
 			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		
-		this.mockMvc.perform(get("/servicereports/" + id))
+		this.mockMvc.perform(get("/servicereports/" + id).header("Authorization", jwt))
 			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 	

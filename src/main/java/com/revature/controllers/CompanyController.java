@@ -24,16 +24,20 @@ import com.revature.util.AuthUtil;
 @RestController
 @RequestMapping("company")
 public class CompanyController {
+	
 	CompanyService companyService;
+	AuthUtil authUtil;
+	
 	@Autowired
-	public CompanyController(CompanyService companyService) {
+	public CompanyController(CompanyService companyService, AuthUtil authUtil) {
 		super();
 		this.companyService = companyService;
+		this.authUtil = authUtil;
 	}	
 
 	@GetMapping("/{id}")
 	public Company getCompany(@PathVariable int id, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return companyService.getCompanyById(id);
 	}
@@ -41,20 +45,20 @@ public class CompanyController {
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Company createCompany(@RequestBody @Valid Company company, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return companyService.createCompany(company);
 	}
 	@PutMapping
 	public Company updateCompany(@RequestBody @Valid Company company, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return companyService.updateCompany(company);
 	}
 	
 	@DeleteMapping
 	public Company deleteCompany(@RequestBody @Valid Company company, @RequestHeader("Authorization") String token) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return companyService.deleteCompany(company);
 	}

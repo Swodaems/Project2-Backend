@@ -31,31 +31,33 @@ public class VehicleController {
 	
 	UserService userService;
 	VehicleService vehicleService;
+	AuthUtil authUtil;
 
 	@Autowired
-	public VehicleController(VehicleService vehicleService, UserService userService) {
+	public VehicleController(VehicleService vehicleService, UserService userService, AuthUtil authUtil) {
 		super();
 		this.userService = userService;
 		this.vehicleService = vehicleService;
+		this.authUtil = authUtil;
 	}
 	
 	@GetMapping("/{id}")
 	public Vehicle getVehicle(@RequestHeader("Authorization") String token, @PathVariable int id) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         return vehicleService.getVehicle(id);
 	}
 	
 	@GetMapping("/user/{userId}")
 	public List<Vehicle> getUserVehicles(@RequestHeader("Authorization") String token, @PathVariable int userId) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         return vehicleService.getUserVehicles(userId);
 	}
 	
 	@GetMapping("/{id}/servicereports")
 	public List<ServiceReport> getVehicleServiceReports(@RequestHeader("Authorization") String token, @PathVariable int id) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         return vehicleService.getVehicleServiceReports(id);
 	}
@@ -63,26 +65,22 @@ public class VehicleController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Vehicle createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-<<<<<<< HEAD
-=======
-        System.out.println(vehicle);
->>>>>>> corey
         vehicle.setUser(userService.getUser(cred.getId()));
         return vehicleService.createVehicle(vehicle);
 	}
 	
 	@PutMapping
 	public Vehicle updateVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         return vehicleService.updateVehicle(vehicle);
 	}
 	
 	@DeleteMapping
 	public Vehicle deleteVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
-		Creds cred = AuthUtil.parseJWT(token);
+		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         return vehicleService.deleteVehicle(vehicle);
 	}

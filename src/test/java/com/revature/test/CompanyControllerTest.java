@@ -27,9 +27,12 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.advisor.ExceptionHandlerAdvisor;
 import com.revature.controllers.CompanyController;
 import com.revature.entities.Company;
+import com.revature.models.Creds;
 import com.revature.services.CompanyService;
+import com.revature.util.AuthUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,6 +44,9 @@ public class CompanyControllerTest {
 	@Mock
 	CompanyService mockCompanyService;
 	
+	@Mock
+	private AuthUtil mockAuthUtil;
+	
 	@InjectMocks
 	CompanyController companyController;
 	
@@ -50,8 +56,21 @@ public class CompanyControllerTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(companyController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(companyController)
+				.setControllerAdvice(new ExceptionHandlerAdvisor())
+				.build();
+		
+		String jwt = "faketoken";
+
+		Creds cred = new Creds();
+		cred.setEmail("fake@email.com");
+		cred.setId(1);
+		cred.setRole("customer");
+
+		when(mockAuthUtil.parseJWT(jwt)).thenReturn(cred);
 	}
+	
+	String jwt = "faketoken";
 	
 	@Test
 	public void testCreateCompanyHappyPath() throws JsonProcessingException, Exception {
@@ -70,7 +89,7 @@ public class CompanyControllerTest {
 		when(mockCompanyService.createCompany(company))
 			.thenReturn(returnedCompany);
 		
-		this.mockMvc.perform(post("/company/")
+		this.mockMvc.perform(post("/company/").header("Authorization", jwt)
 				// Include the request data
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(company)))
@@ -92,7 +111,7 @@ public class CompanyControllerTest {
 		when(mockCompanyService.getCompanyById(id))
 			.thenReturn(company);
 		
-		this.mockMvc.perform(get("/company/" + id))
+		this.mockMvc.perform(get("/company/" + id).header("Authorization", jwt))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
 				.andExpect(content().json(om.writeValueAsString(company)))
 				.andExpect(status().is(HttpStatus.OK.value()));
@@ -115,7 +134,7 @@ public class CompanyControllerTest {
 		when(mockCompanyService.updateCompany(company))
 			.thenReturn(returnedCompany);
 		
-		this.mockMvc.perform(put("/company/")
+		this.mockMvc.perform(put("/company/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(company)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -134,7 +153,7 @@ public class CompanyControllerTest {
 		when(mockCompanyService.deleteCompany(company))
 			.thenReturn(company);
 		
-		this.mockMvc.perform(delete("/company/")
+		this.mockMvc.perform(delete("/company/").header("Authorization", jwt)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(company)))
 				.andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -150,7 +169,7 @@ public class CompanyControllerTest {
 		when(mockCompanyService.getCompanyById(1))
 			.thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 		
-		this.mockMvc.perform(get("/company/" + id))
+		this.mockMvc.perform(get("/company/" + id).header("Authorization", jwt))
 			.andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 	}
 

@@ -28,11 +28,13 @@ import com.revature.util.AuthUtil;
 public class UserService {
 	
 	UserRepository userRepository;
+	AuthUtil authUtil;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, AuthUtil authUtil) {
 		super();
 		this.userRepository = userRepository;
+		this.authUtil = authUtil;
 	}
 
 	@Transactional
@@ -97,7 +99,7 @@ public class UserService {
 		User user = authenticate(credentials.getPassword(), optionalUser.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.FORBIDDEN)));
 		
-		return AuthUtil.generateToken(user);
+		return authUtil.generateToken(user);
 	}
 	
 	public User authenticate(String password, User user) {

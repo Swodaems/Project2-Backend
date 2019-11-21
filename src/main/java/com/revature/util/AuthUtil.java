@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.stereotype.Service;
+
 import com.revature.entities.User;
 import com.revature.models.Creds;
 
@@ -14,11 +16,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Service
 public class AuthUtil {
 	
 	public static final String SECRET = System.getenv("SECRET");
 	
-	public static String generateToken(User user) {
+	public String generateToken(User user) {
         Date issuedAt = new Date(System.currentTimeMillis());
         long expiresIn = System.currentTimeMillis() + 3600000;
         Date expirationDate = new Date(expiresIn);
@@ -35,7 +38,7 @@ public class AuthUtil {
         return jwt;
     }
 	
-	public static Creds parseJWT(String jwt) {
+	public Creds parseJWT(String jwt) {
 		Jws<Claims> jws;
 		Creds cred = new Creds();
 		
@@ -50,8 +53,10 @@ public class AuthUtil {
 			cred.setEmail(jws.getBody().getSubject());
 			cred.setRole(jws.getBody().get("role").toString());
 			cred.setId(Integer.parseInt(jws.getBody().get("id").toString()));
+			System.out.println("we can trust this jwt");
 			// we can safely trust the JWT
 		} catch (JwtException ex) {
+			System.out.println("cant trust this jwt");
 			return null;
 		}
 		return cred;
