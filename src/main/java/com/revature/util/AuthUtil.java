@@ -5,9 +5,6 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-
 import com.revature.entities.User;
 import com.revature.models.Creds;
 

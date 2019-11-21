@@ -21,6 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
 import com.revature.models.Creds;
+import com.revature.services.UserService;
 import com.revature.services.VehicleService;
 import com.revature.util.AuthUtil;
 
@@ -28,6 +29,7 @@ import com.revature.util.AuthUtil;
 @RequestMapping("vehicles")
 public class VehicleController {
 	
+	UserService userService;
 	VehicleService vehicleService;
 
 	@Autowired
@@ -62,6 +64,7 @@ public class VehicleController {
 	public Vehicle createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = AuthUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        vehicle.setUser(userService.getUser(cred.getId()));
         return vehicleService.createVehicle(vehicle);
 	}
 	
