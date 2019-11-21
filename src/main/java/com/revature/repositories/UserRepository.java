@@ -47,7 +47,7 @@ public class UserRepository {
 		List<Vehicle> vehicles = user.getVehicles();
 		List<ServiceReport> services= new ArrayList<>();
 		for(Vehicle v:vehicles) {
-			services.addAll(v.getServices());
+			services.addAll(v.getServiceReports());
 		}
 		Hibernate.initialize(services);
 		return Optional.of(services);

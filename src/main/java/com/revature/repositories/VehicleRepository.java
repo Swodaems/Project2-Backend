@@ -62,7 +62,7 @@ public class VehicleRepository {
 		if (vehicle == null) 
 			return Optional.empty();
 		
-		List<ServiceReport> serviceReports = vehicle.getServices();
+		List<ServiceReport> serviceReports = vehicle.getServiceReports();
 		Hibernate.initialize(serviceReports);
 		return Optional.of(serviceReports);
 	}
