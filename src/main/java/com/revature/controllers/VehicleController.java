@@ -33,8 +33,9 @@ public class VehicleController {
 	VehicleService vehicleService;
 
 	@Autowired
-	public VehicleController(VehicleService vehicleService) {
+	public VehicleController(VehicleService vehicleService, UserService userService) {
 		super();
+		this.userService = userService;
 		this.vehicleService = vehicleService;
 	}
 	
@@ -64,6 +65,10 @@ public class VehicleController {
 	public Vehicle createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = AuthUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+<<<<<<< HEAD
+=======
+        System.out.println(vehicle);
+>>>>>>> corey
         vehicle.setUser(userService.getUser(cred.getId()));
         return vehicleService.createVehicle(vehicle);
 	}
