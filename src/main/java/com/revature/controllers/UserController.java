@@ -49,6 +49,13 @@ public class UserController {
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		System.out.println(token);
 	}
+	
+	@GetMapping("/{id}")
+	public User getUserById(@RequestHeader("Authorization") String token, @PathVariable int id) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		return userService.getUser(id);
+	}
 
 	@GetMapping("/user")
 	public User getUser(@RequestHeader("Authorization") String token) {
