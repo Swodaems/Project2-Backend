@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
+
 import com.revature.entities.User;
 import com.revature.models.Creds;
 
@@ -31,6 +34,7 @@ public class AuthUtil {
         // Build token and serialize it to a compact, URL-safe string
         String jwt = Jwts.builder().setIssuedAt(issuedAt).setSubject(user.getEmail()).setExpiration(expirationDate)
                 .signWith(sa, signingKey).claim("role", user.getRole().getRoleName()).claim("id", user.getId()).compact();
+        System.out.println(jwt);
         return jwt;
     }
 	
@@ -51,7 +55,7 @@ public class AuthUtil {
 			cred.setId(Integer.parseInt(jws.getBody().get("id").toString()));
 			// we can safely trust the JWT
 		} catch (JwtException ex) {
-			// we *cannot* use the JWT as intended by its creator
+			return null;
 		}
 		return cred;
 	}
