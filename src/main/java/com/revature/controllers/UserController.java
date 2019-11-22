@@ -107,9 +107,13 @@ public class UserController {
 	}
 	
 	@PutMapping
-	public UserData updateUSer(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
+	public UserData updateUser(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		User oldUser = userService.getUser(cred.getId());
+		user.setPassword(oldUser.getPassword());
+		user.setSalt(oldUser.getSalt());
+		user.setVehicles(oldUser.getVehicles());
 		return new UserData(userService.updateUser(user));
 	}
 	
