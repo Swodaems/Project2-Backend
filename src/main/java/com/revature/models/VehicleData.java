@@ -117,7 +117,7 @@ public class VehicleData {
 		// TODO Auto-generated constructor stub
 	}
 	public VehicleData(Vehicle vehicle) {
-		this.setUserId(vehicle.getUser().getId());
+		if(vehicle.getUser() != null) this.setUserId(vehicle.getUser().getId());
 		this.setName(vehicle.getName());
 		if(vehicle.getInsurance() != null) this.setInsuranceId(vehicle.getInsurance().getId());
 		List<Integer> serviceReportIds=new ArrayList<>();
