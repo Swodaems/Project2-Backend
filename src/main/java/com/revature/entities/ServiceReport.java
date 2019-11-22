@@ -1,6 +1,6 @@
 package com.revature.entities;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,7 +28,7 @@ public class ServiceReport {
 //	@JsonProperty("ServiceType")
 	private ServiceType type;
 	private double cost;
-	private LocalDateTime time;
+	private Timestamp time;
 	@Column(name="technician_note")
 	private String technicianNote;
 	@Column(name="user_note")
@@ -145,7 +145,7 @@ public class ServiceReport {
 	}
 
 
-	public ServiceReport(int id, String name, ServiceType type, double cost, LocalDateTime time, String technicianNote,
+	public ServiceReport(int id, String name, ServiceType type, double cost, Timestamp time, String technicianNote,
 			String userNote, Vehicle vehicle, User user) {
 		super();
 		this.id = id;
@@ -202,12 +202,12 @@ public class ServiceReport {
 	}
 
 
-	public LocalDateTime getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
 
-	public void setTime(LocalDateTime time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 

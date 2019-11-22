@@ -40,14 +40,16 @@ public class ServiceReportController {
 		this.serviceReportService = serviceReportService;
 		this.authUtil = authUtil;
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ServiceReportData createServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+	public ServiceReportData createServiceReport(@RequestHeader("Authorization") String token,
+			@RequestBody @Valid ServiceReport serviceReport) {
 		Creds cred = authUtil.parseJWT(token);
-        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        System.out.println(serviceReport);
-        return new ServiceReportData(serviceReportService.createServiceReport(serviceReport));
+		if (cred == null)
+			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		System.out.println(serviceReport);
+		return new ServiceReportData(serviceReportService.createServiceReport(serviceReport));
 	}
 	@PostMapping("/{id}/photo")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -59,24 +61,42 @@ public class ServiceReportController {
 		return new ServiceReportData(serviceReportService.addPhoto(id,url));
 	}
 	@PutMapping
-	public ServiceReportData updateServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+	public ServiceReportData updateServiceReport(@RequestHeader("Authorization") String token,
+			@RequestBody @Valid ServiceReport serviceReport) {
 		Creds cred = authUtil.parseJWT(token);
-        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return new ServiceReportData(serviceReportService.updateServiceReport(serviceReport));
+		if (cred == null)
+			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		ServiceReport oldReport = serviceReportService.getServiceReportById(serviceReport.getId());
+		serviceReport.setVehicle(oldReport.getVehicle());
+		serviceReport.setTime(oldReport.getTime());
+		if (oldReport.getUser() != null && serviceReport.getUser() == null)
+			serviceReport.setUser(oldReport.getUser());
+		if (oldReport.getUserNote() != null && serviceReport.getUserNote() == null)
+			serviceReport.setUserNote(oldReport.getUserNote());
+		if (oldReport.getTechnicianNote() != null && serviceReport.getTechnicianNote() == null)
+			serviceReport.setTechnicianNote(oldReport.getTechnicianNote());
+		if (oldReport.getType() != null && serviceReport.getType() == null)
+			serviceReport.setType(oldReport.getType());
+		if (oldReport.getReceipt() != null && serviceReport.getReceipt() == null)
+			serviceReport.setReceipt(oldReport.getReceipt());
+		return new ServiceReportData(serviceReportService.updateServiceReport(serviceReport));
 	}
-	
+
 	@GetMapping("/{id}")
-	public ServiceReportData getServiceReportById(@RequestHeader("Authorization") String token,@PathVariable int id) {
+	public ServiceReportData getServiceReportById(@RequestHeader("Authorization") String token, @PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
-        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return new ServiceReportData(serviceReportService.getServiceReportById(id));
+		if (cred == null)
+			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		return new ServiceReportData(serviceReportService.getServiceReportById(id));
 	}
-	
+
 	@DeleteMapping
-	public ServiceReportData deleteServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
+	public ServiceReportData deleteServiceReport(@RequestHeader("Authorization") String token,
+			@RequestBody @Valid ServiceReport serviceReport) {
 		Creds cred = authUtil.parseJWT(token);
-        if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return new ServiceReportData(serviceReportService.deleteServiceReport(serviceReport));
+		if (cred == null)
+			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		return new ServiceReportData(serviceReportService.deleteServiceReport(serviceReport));
 	}
-	
+
 }
