@@ -10,7 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Vehicle {
@@ -26,13 +27,17 @@ public class Vehicle {
 	private double mileage;
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	@JsonIgnore
+	@JsonIgnoreProperties({"Vehicle","ServiceReport"})
+	@JsonProperty("User")
 	private User user;
 	@ManyToOne
 	@JoinColumn(name="insurance_id")
+	@JsonProperty("Insurance")
 	private Insurance insurance;
 	@OneToMany
 	@JoinColumn(name="vehicle_id")
+	@JsonIgnoreProperties({"Vehicle","User"})
+	@JsonProperty("ServiceReport")
 	private List<ServiceReport> serviceReports;
 	private String VIN;
 	private String photo;

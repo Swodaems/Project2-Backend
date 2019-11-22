@@ -15,9 +15,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="customers")
+@JsonIgnoreProperties(allowSetters=true,value= {"Password"})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +32,7 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 	@NotEmpty
-//	@JsonIgnore
+	@JsonProperty("Password")
 	private String password;
 	@JsonIgnore
 	private String salt;
@@ -41,12 +44,15 @@ public class User {
 	private Role role;
 	@ManyToOne
 	@JoinColumn(name="company_id")
+	@JsonProperty("Company")
 	private Company company;
 	@OneToMany
 	@JoinColumn(name="user_id")
+	@JsonProperty("ServiceReport")
 	private List<ServiceReport> serviceReports;
 	@OneToMany
 	@JoinColumn(name="user_id")
+	@JsonProperty("Vehicle")
 	private List<Vehicle> vehicles;
 	
 	

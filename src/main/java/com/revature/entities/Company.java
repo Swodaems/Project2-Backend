@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="companies")
 public class Company {
@@ -27,6 +29,7 @@ public class Company {
 	private String state;
 	@OneToMany
 	@JoinColumn(name="company_id")
+	@JsonIgnoreProperties({"Vehicle","ServiceReport", "Company"})
 	private List<User> technicians;
 	
 	public List<User> getTechnicians() {

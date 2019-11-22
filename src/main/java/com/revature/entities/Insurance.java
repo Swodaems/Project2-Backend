@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Insurance {
@@ -19,10 +18,9 @@ public class Insurance {
 	private int id;
 	@Column(name="company_name")
 	private String companyName;
-	
 	@OneToMany
 	@JoinColumn(name="insurance_id")
-	@JsonIgnore
+	@JsonIgnoreProperties({"ServiceReport","User","Insurance"})
 	private List<Vehicle> vehicles;
 	
 	public List<Vehicle> getVehicles() {
