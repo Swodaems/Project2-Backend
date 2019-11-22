@@ -85,8 +85,8 @@ public class UserData {
 		this.setLastName(user.getLastName());
 		this.setEmail(user.getEmail());
 		this.setPhoto(user.getPhoto());
-		this.setRoleId(user.getRole().getId());
-		this.setCompanyId(user.getCompany().getId());
+		if(user.getRole() != null) this.setRoleId(user.getRole().getId());
+		if(user.getCompany() != null) this.setCompanyId(user.getCompany().getId());
 		List<Integer> vehicleIds= new ArrayList<>();
 		for(Vehicle v:user.getVehicles()) {
 			vehicleIds.add(v.getId());

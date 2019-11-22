@@ -2,8 +2,10 @@ package com.revature.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,8 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Formula;
 
 
 @Entity
@@ -24,7 +25,7 @@ public class ServiceReport {
 	private String name;
 	@ManyToOne
 	@JoinColumn(name="type_id")
-	@JsonProperty("ServiceType")
+//	@JsonProperty("ServiceType")
 	private ServiceType type;
 	private double cost;
 	private LocalDateTime time;
@@ -32,18 +33,21 @@ public class ServiceReport {
 	private String technicianNote;
 	@Column(name="user_note")
 	private String userNote;
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
 	@JoinColumn(name="vehicle_id")
-	@JsonIgnoreProperties({"ServiceReport","User"})
-	@JsonProperty("Vehicle")
+//	@JsonIgnoreProperties({"ServiceReport","User"})
+//	@JsonProperty("vehicle")
 	private Vehicle vehicle;
 	private String receipt;
 	//Is this meant to represent the technician
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	@JsonIgnoreProperties({"Vehicle","ServiceReport"})
-	@JsonProperty("User")
+//	@JsonIgnoreProperties({"Vehicle","ServiceReport"})
+//	@JsonProperty("User")
 	private User user;
+	
+	@Formula("vehicle_id")
+	private int vehicleId;
 	
 	
 	public String getReceipt() {

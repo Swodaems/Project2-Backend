@@ -27,17 +27,17 @@ public class Vehicle {
 	private double mileage;
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	@JsonIgnoreProperties({"Vehicle","ServiceReport"})
-	@JsonProperty("User")
+//	@JsonIgnoreProperties({"Vehicle","ServiceReport"})
+//	@JsonProperty("User")
 	private User user;
 	@ManyToOne
 	@JoinColumn(name="insurance_id")
-	@JsonProperty("Insurance")
+//	@JsonProperty("Insurance")
 	private Insurance insurance;
 	@OneToMany
 	@JoinColumn(name="vehicle_id")
-	@JsonIgnoreProperties({"Vehicle","User"})
-	@JsonProperty("ServiceReport")
+//	@JsonIgnoreProperties({"Vehicle","User"})
+//	@JsonProperty("ServiceReport")
 	private List<ServiceReport> serviceReports;
 	private String VIN;
 	private String photo;

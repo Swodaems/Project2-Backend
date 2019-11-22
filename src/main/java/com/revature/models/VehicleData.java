@@ -119,8 +119,7 @@ public class VehicleData {
 	public VehicleData(Vehicle vehicle) {
 		this.setUserId(vehicle.getUser().getId());
 		this.setName(vehicle.getName());
-		if(vehicle.getInsurance()!=null)
-			this.setInsuranceId(vehicle.getInsurance().getId());
+		if(vehicle.getInsurance() != null) this.setInsuranceId(vehicle.getInsurance().getId());
 		List<Integer> serviceReportIds=new ArrayList<>();
 		for(ServiceReport sr:vehicle.getServiceReports()) {
 			serviceReportIds.add(sr.getId());

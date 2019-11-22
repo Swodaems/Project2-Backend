@@ -88,12 +88,12 @@ public class ServiceReportData {
 		this.setId(sr.getId());
 		this.setName(sr.getName());
 		this.setReceipt(sr.getReceipt());
-		this.setServiceTypeId(sr.getType().getId());
+		if(sr.getType() != null) this.setServiceTypeId(sr.getType().getId());
 		this.setTechnicianNote(sr.getTechnicianNote());
 		this.setTime(sr.getTime());
-		this.setUserId(sr.getUser().getId());
+		if(sr.getUser() != null) this.setUserId(sr.getUser().getId());
 		this.setUserNote(sr.getUserNote());
-		this.setVehicleId(sr.getVehicle().getId());
+		if(sr.getVehicle() != null) this.setVehicleId(sr.getVehicle().getId());
 		
 	}
 }

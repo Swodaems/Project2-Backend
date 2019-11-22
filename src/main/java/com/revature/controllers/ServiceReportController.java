@@ -43,6 +43,7 @@ public class ServiceReportController {
 	public ServiceReportData createServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        System.out.println(serviceReport);
         return new ServiceReportData(serviceReportService.createServiceReport(serviceReport));
 	}
 	

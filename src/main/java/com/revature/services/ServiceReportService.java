@@ -17,15 +17,18 @@ import com.revature.repositories.ServiceReportRepository;
 public class ServiceReportService {
 	
 	ServiceReportRepository serviceReportRepository;
+	VehicleService vehicleService;
 
 	@Autowired
-	public ServiceReportService(ServiceReportRepository serviceReportRepository) {
+	public ServiceReportService(ServiceReportRepository serviceReportRepository, VehicleService vehicleService) {
 		super();
 		this.serviceReportRepository = serviceReportRepository;
+		this.vehicleService = vehicleService;
 	}
 
 	@Transactional
 	public ServiceReport createServiceReport(@Valid ServiceReport serviceReport) {
+		serviceReport.setVehicle(vehicleService.getVehicle(serviceReport.getVehicle().getId()));
 		return serviceReportRepository.create(serviceReport);
 	}
 
