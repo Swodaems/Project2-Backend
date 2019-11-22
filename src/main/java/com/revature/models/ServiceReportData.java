@@ -2,19 +2,7 @@ package com.revature.models;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.revature.entities.ServiceReport;
-import com.revature.entities.ServiceType;
-import com.revature.entities.User;
-import com.revature.entities.Vehicle;
 
 public class ServiceReportData {
 	private int id;
@@ -100,12 +88,12 @@ public class ServiceReportData {
 		this.setId(sr.getId());
 		this.setName(sr.getName());
 		this.setReceipt(sr.getReceipt());
-		this.setServiceTypeId(sr.getType().getId());
+		if(sr.getType() != null) this.setServiceTypeId(sr.getType().getId());
 		this.setTechnicianNote(sr.getTechnicianNote());
 		this.setTime(sr.getTime());
-		this.setUserId(sr.getUser().getId());
+		if(sr.getUser() != null) this.setUserId(sr.getUser().getId());
 		this.setUserNote(sr.getUserNote());
-		this.setVehicleId(sr.getVehicle().getId());
+		if(sr.getVehicle() != null) this.setVehicleId(sr.getVehicle().getId());
 		
 	}
 }
