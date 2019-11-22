@@ -59,10 +59,11 @@ public class InsuranceController {
 		return insuranceService.updateInsurance(insurance);
 	}
 	
-	@DeleteMapping
-	public Insurance deleteInsurance(@RequestBody @Valid Insurance insurance, @RequestHeader("Authorization") String token) {
+	@DeleteMapping("/{id}")
+	public Insurance deleteInsurance(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		Insurance insurance= insuranceService.getInsurance(id);
 		return insuranceService.deleteInsurance(insurance);
 	}
 	

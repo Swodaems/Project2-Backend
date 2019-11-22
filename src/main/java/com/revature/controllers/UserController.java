@@ -105,7 +105,7 @@ public class UserController {
 		return srds;
 	}
 	@GetMapping("/{id}/technicianreports")
-	public List<ServiceReportData> gettechnicianReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
+	public List<ServiceReportData> getTechnicianReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		List<ServiceReport> srs =userService.getTechnicianReportsByUserId(id);
@@ -150,10 +150,11 @@ public class UserController {
 		return new UserData(userService.updateUser(user));
 	}
 	
-	@DeleteMapping
-	public UserData deleteUser(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
+	@DeleteMapping("/{id}")
+	public UserData deleteUser(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		User user= userService.getUser(id);
 		return new UserData(userService.deleteUser(user));
 	}
 	
