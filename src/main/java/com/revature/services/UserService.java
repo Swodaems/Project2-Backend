@@ -101,7 +101,9 @@ public class UserService {
 		
 		return authUtil.generateToken(user);
 	}
-	
+	public List<User> getTechniciansByName(String firstName,String lastName){
+		return userRepository.getTechniciansByName(firstName, lastName);
+	}
 	public User authenticate(String password, User user) {
 		String generatedPassword = null;
         try {

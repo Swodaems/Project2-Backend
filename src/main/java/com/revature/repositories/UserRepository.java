@@ -76,7 +76,18 @@ public class UserRepository {
 		} catch (NoResultException e) { return null; }
 		return Optional.ofNullable(user);
 	}
-
+	public List<User> getTechniciansByName(String firstName,String lastName){
+		Session session = em.unwrap(Session.class);
+		List<User> users =new ArrayList<>();
+		String hql = "from User u where u.firstName like :firstName and u.lastName like :lastName and u.role.id = 2";
+		try {
+			users = session.createQuery(hql, User.class)
+					.setParameter("firstName", firstName+"%", StringType.INSTANCE)
+					.setParameter("lastName", lastName+"%",StringType.INSTANCE)
+					.getResultList();
+		} catch (NoResultException e) { return users; }
+		return users;
+	}
 
 	public User update(@Valid User user) {
 		Session session = em.unwrap(Session.class);

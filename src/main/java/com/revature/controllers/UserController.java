@@ -60,7 +60,17 @@ public class UserController {
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return new UserData(userService.getUser(id));
 	}
-
+	@GetMapping("technicians")
+	public List<UserData> getTechniciansByName(@RequestHeader("Authorization") String token, @RequestBody User user){
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		List<User> users =userService.getTechniciansByName(user.getFirstName(), user.getLastName());
+		List<UserData> userData=new ArrayList<>();
+		for(User u : users) {
+			userData.add(new UserData(u));
+		}
+		return userData;
+	}
 	@GetMapping("/user")
 	public UserData getUser(@RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);

@@ -53,9 +53,9 @@ public class AuthUtil {
 			cred.setEmail(jws.getBody().getSubject());
 			cred.setRole(jws.getBody().get("role").toString());
 			cred.setId(Integer.parseInt(jws.getBody().get("id").toString()));
-			System.out.println("we can trust this jwt");
+			//System.out.println("we can trust this jwt");
 		} catch (JwtException ex) {
-			System.out.println("cant trust this jwt");
+			//System.out.println("cant trust this jwt");
 			return null;
 		}
 		return cred;
