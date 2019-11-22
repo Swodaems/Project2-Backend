@@ -80,7 +80,7 @@ public class UserRepository {
 
 	public User update(@Valid User user) {
 		Session session = em.unwrap(Session.class);
-		session.update(user);
+		session.merge(user);
 		return user;
 	}
 
