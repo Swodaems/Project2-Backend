@@ -32,7 +32,7 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 	@NotEmpty
-	@JsonProperty("Password")
+	//@JsonProperty("Password")
 	private String password;
 	@JsonIgnore
 	private String salt;
