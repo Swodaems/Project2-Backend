@@ -92,8 +92,8 @@ public class VehicleController {
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         Vehicle oldVehicle = vehicleService.getVehicle(vehicle.getId());
         vehicle.setUser(oldVehicle.getUser());
-        if(oldVehicle.getPhoto() != null) vehicle.setPhoto(oldVehicle.getPhoto());
-        if(oldVehicle.getInsurance() != null) vehicle.setInsurance(oldVehicle.getInsurance());
+        if(oldVehicle.getPhoto() != null && vehicle.getPhoto() == null) vehicle.setPhoto(oldVehicle.getPhoto());
+        if(oldVehicle.getInsurance() != null && vehicle.getInsurance() == null) vehicle.setInsurance(oldVehicle.getInsurance());
         return new VehicleData(vehicleService.updateVehicle(vehicle));
 	}
 	

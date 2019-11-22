@@ -114,6 +114,8 @@ public class UserController {
 		user.setPassword(oldUser.getPassword());
 		user.setSalt(oldUser.getSalt());
 		user.setVehicles(oldUser.getVehicles());
+		if(oldUser.getPhoto() != null && user.getPhoto() == null) user.setPhoto(oldUser.getPhoto());
+		if(oldUser.getCompany() != null && user.getCompany() == null) user.setCompany(oldUser.getCompany());
 		return new UserData(userService.updateUser(user));
 	}
 	
