@@ -110,6 +110,7 @@ public class UserController {
 	public UserData updateUSer(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		user.setPassword(userService.getUser(cred.getId()).getPassword());
 		return new UserData(userService.updateUser(user));
 	}
 	
