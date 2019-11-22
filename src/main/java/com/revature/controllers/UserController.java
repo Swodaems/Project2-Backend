@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,7 @@ import com.revature.models.UserData;
 import com.revature.models.VehicleData;
 import com.revature.services.UserService;
 import com.revature.util.AuthUtil;
+import com.revature.util.PhotoUtil;
 
 
 @RestController
@@ -60,7 +62,7 @@ public class UserController {
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		return new UserData(userService.getUser(id));
 	}
-	@GetMapping("technicians")
+	@PostMapping("technicians")
 	public List<UserData> getTechniciansByName(@RequestHeader("Authorization") String token, @RequestBody User user){
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
@@ -109,6 +111,15 @@ public class UserController {
 		return new UserData(userService.createUser(user));
 	}
 
+	@PostMapping("/{id}/photo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public UserData AddPhoto(@RequestHeader("Authorization") String token, @PathVariable int id, HttpEntity<byte[]> requestEntity) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		String url=PhotoUtil.uploadPhoto(requestEntity.getBody());
+		
+		return new UserData(userService.addPhoto(id,url));
+	}
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public String login(@RequestBody Credentials credentials) {

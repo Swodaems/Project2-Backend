@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +25,12 @@ import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
 import com.revature.models.Creds;
 import com.revature.models.ServiceReportData;
+import com.revature.models.UserData;
 import com.revature.models.VehicleData;
 import com.revature.services.UserService;
 import com.revature.services.VehicleService;
 import com.revature.util.AuthUtil;
+import com.revature.util.PhotoUtil;
 
 @RestController
 @RequestMapping("vehicles")
@@ -85,7 +88,15 @@ public class VehicleController {
         vehicle.setUser(userService.getUser(cred.getId()));
 		return new VehicleData(vehicleService.createVehicle(vehicle));
 	}
-	
+	@PostMapping("/{id}/photo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public VehicleData AddPhoto(@RequestHeader("Authorization") String token, @PathVariable int id, HttpEntity<byte[]> requestEntity) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		String url=PhotoUtil.uploadPhoto(requestEntity.getBody());
+		
+		return new VehicleData(vehicleService.addPhoto(id,url));
+	}
 	@PutMapping
 	public VehicleData updateVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = authUtil.parseJWT(token);

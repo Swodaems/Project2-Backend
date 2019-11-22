@@ -155,4 +155,12 @@ public class UserService {
 		return userRepository.delete(user);
 	}
 
+	public User addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Optional<User> optionalUser = 
+				userRepository.addPhoto(id,url);
+		return optionalUser.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
+
 }

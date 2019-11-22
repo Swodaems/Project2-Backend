@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.ServiceReport;
+import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.repositories.VehicleRepository;
 
@@ -59,5 +60,14 @@ public class VehicleService {
 				vehicleRepository.getVehicleServiceReports(id);
 		return optionalVehicleServiceReports.orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
+
+	public Vehicle addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Optional<Vehicle> optionalVehicle = 
+				vehicleRepository.addPhoto(id,url);
+		return optionalVehicle.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
+	
 
 }

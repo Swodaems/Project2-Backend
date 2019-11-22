@@ -3,6 +3,7 @@ package com.revature.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +21,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.revature.entities.ServiceReport;
 import com.revature.models.Creds;
 import com.revature.models.ServiceReportData;
+import com.revature.models.VehicleData;
 import com.revature.services.ServiceReportService;
 import com.revature.util.AuthUtil;
+import com.revature.util.PhotoUtil;
 
 @RestController
 @RequestMapping("/servicereports/")
@@ -46,7 +49,15 @@ public class ServiceReportController {
         System.out.println(serviceReport);
         return new ServiceReportData(serviceReportService.createServiceReport(serviceReport));
 	}
-	
+	@PostMapping("/{id}/photo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ServiceReportData AddPhoto(@RequestHeader("Authorization") String token, @PathVariable int id, HttpEntity<byte[]> requestEntity) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		String url=PhotoUtil.uploadPhoto(requestEntity.getBody());
+		
+		return new ServiceReportData(serviceReportService.addPhoto(id,url));
+	}
 	@PutMapping
 	public ServiceReportData updateServiceReport(@RequestHeader("Authorization") String token,@RequestBody @Valid ServiceReport serviceReport) {
 		Creds cred = authUtil.parseJWT(token);

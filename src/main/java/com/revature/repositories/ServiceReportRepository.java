@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.revature.entities.ServiceReport;
+import com.revature.entities.Vehicle;
 
 @Repository
 public class ServiceReportRepository {
@@ -38,6 +39,15 @@ public class ServiceReportRepository {
 		Session session = em.unwrap(Session.class);
 		session.delete(serviceReport);
 		return serviceReport;
+	}
+
+	public Optional<ServiceReport> addPhoto(int id, String url) {
+		Session session = em.unwrap(Session.class);
+		ServiceReport serviceReport = session.get(ServiceReport.class, id);
+		if(serviceReport == null) return null;
+		serviceReport.setReceipt(url);
+		session.merge(serviceReport);
+		return Optional.ofNullable(serviceReport);
 	}
 
 }

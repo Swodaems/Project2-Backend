@@ -67,4 +67,14 @@ public class VehicleRepository {
 		return Optional.of(serviceReports);
 	}
 
+	public Optional<Vehicle> addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Session session = em.unwrap(Session.class);
+		Vehicle vehicle = session.get(Vehicle.class, id);
+		if(vehicle == null) return null;
+		vehicle.setPhoto(url);
+		session.merge(vehicle);
+		return Optional.ofNullable(vehicle);
+	}
+
 }
