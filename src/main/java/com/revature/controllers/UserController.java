@@ -113,6 +113,7 @@ public class UserController {
 		User oldUser = userService.getUser(cred.getId());
 		user.setPassword(oldUser.getPassword());
 		user.setSalt(oldUser.getSalt());
+		user.setVehicles(oldUser.getVehicles());
 		return new UserData(userService.updateUser(user));
 	}
 	
