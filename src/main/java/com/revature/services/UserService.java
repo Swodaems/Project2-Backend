@@ -85,6 +85,12 @@ public class UserService {
 		return optionalServiceReports.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
+	public List<ServiceReport> getTechnicianReportsByUserId(int id) {
+		Optional<List<ServiceReport>> optionalServiceReports = 
+					userRepository.getTechnicianReports(id);
+		return optionalServiceReports.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
 	public User getUser(int id) {
 		Optional<User> optionalUser = 
 				userRepository.getById(id);

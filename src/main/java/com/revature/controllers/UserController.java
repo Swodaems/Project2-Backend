@@ -104,7 +104,17 @@ public class UserController {
 		}
 		return srds;
 	}
-	
+	@GetMapping("/{id}/technicianreports")
+	public List<ServiceReportData> gettechnicianReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		List<ServiceReport> srs =userService.getTechnicianReportsByUserId(id);
+		List<ServiceReportData> srds = new ArrayList<>();
+		for(ServiceReport sr:srs) {
+			srds.add(new ServiceReportData(sr));
+		}
+		return srds;
+	}
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserData createUser(@RequestBody @Valid User user) {
