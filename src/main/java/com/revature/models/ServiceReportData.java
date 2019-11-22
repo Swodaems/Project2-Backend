@@ -1,6 +1,6 @@
 package com.revature.models;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import com.revature.entities.ServiceReport;
 
@@ -10,7 +10,7 @@ public class ServiceReportData {
 	private int serviceTypeId;
 	//private ServiceType type;
 	private double cost;
-	private LocalDateTime time;
+	private Timestamp time;
 	private String technicianNote;
 	private String userNote;
 	private int vehicleId;
@@ -49,10 +49,10 @@ public class ServiceReportData {
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-	public LocalDateTime getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
-	public void setTime(LocalDateTime time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 	public String getTechnicianNote() {
