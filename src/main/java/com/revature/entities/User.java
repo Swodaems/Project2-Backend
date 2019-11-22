@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="customers")
-@JsonIgnoreProperties(allowSetters=true,value= {"Password"})
+//@JsonIgnoreProperties(allowSetters=true,value= {"Password"})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,15 +44,15 @@ public class User {
 	private Role role;
 	@ManyToOne
 	@JoinColumn(name="company_id")
-	@JsonProperty("Company")
+//	@JsonProperty("Company")
 	private Company company;
 	@OneToMany
 	@JoinColumn(name="user_id")
-	@JsonProperty("ServiceReport")
+//	@JsonProperty("ServiceReport")
 	private List<ServiceReport> serviceReports;
 	@OneToMany
 	@JoinColumn(name="user_id")
-	@JsonProperty("Vehicle")
+//	@JsonProperty("Vehicle")
 	private List<Vehicle> vehicles;
 	
 	
