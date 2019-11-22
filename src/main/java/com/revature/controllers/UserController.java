@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -24,6 +25,9 @@ import com.revature.entities.User;
 import com.revature.entities.Vehicle;
 import com.revature.models.Credentials;
 import com.revature.models.Creds;
+import com.revature.models.ServiceReportData;
+import com.revature.models.UserData;
+import com.revature.models.VehicleData;
 import com.revature.services.UserService;
 import com.revature.util.AuthUtil;
 
@@ -51,38 +55,48 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public User getUserById(@RequestHeader("Authorization") String token, @PathVariable int id) {
+	public UserData getUserById(@RequestHeader("Authorization") String token, @PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-		return userService.getUser(id);
+		return new UserData(userService.getUser(id));
 	}
 
 	@GetMapping("/user")
-	public User getUser(@RequestHeader("Authorization") String token) {
+	public UserData getUser(@RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		
-		return userService.getUser(cred.getId());
+		return new UserData(userService.getUser(cred.getId()));
 	}
 
 	@GetMapping("/{id}/vehicles")
-	public List<Vehicle> getUserVehicles(@PathVariable int id, @RequestHeader("Authorization") String token) {
+	public List<VehicleData> getUserVehicles(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-		return userService.getVehiclesByUserId(id);
+		List<Vehicle> vs = userService.getVehiclesByUserId(id);
+		List<VehicleData> vds = new ArrayList<>();
+		for(Vehicle v :vs) {
+			vds.add(new VehicleData(v));
+		}
+		return vds;
 	}
 	
 	@GetMapping("/{id}/servicereports")
-	public List<ServiceReport> getUserServiceReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
+	public List<ServiceReportData> getUserServiceReports(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-		return userService.getServiceReportsByUserId(id);
+		List<ServiceReport> srs =userService.getServiceReportsByUserId(id);
+		List<ServiceReportData> srds = new ArrayList<>();
+		for(ServiceReport sr:srs) {
+			srds.add(new ServiceReportData(sr));
+		}
+		return srds;
 	}
 	
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User createUser(@RequestBody @Valid User user) {
-		return userService.createUser(user);
+	public UserData createUser(@RequestBody @Valid User user) {
+		return new UserData(userService.createUser(user));
 	}
 
 	@PostMapping("/login")
@@ -93,17 +107,17 @@ public class UserController {
 	}
 	
 	@PutMapping
-	public User updateUSer(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
+	public UserData updateUSer(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-		return userService.updateUser(user);
+		return new UserData(userService.updateUser(user));
 	}
 	
 	@DeleteMapping
-	public User deleteUser(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
+	public UserData deleteUser(@RequestBody @Valid User user, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-		return userService.deleteUser(user);
+		return new UserData(userService.deleteUser(user));
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,6 +23,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.revature.entities.ServiceReport;
 import com.revature.entities.Vehicle;
 import com.revature.models.Creds;
+import com.revature.models.ServiceReportData;
+import com.revature.models.VehicleData;
 import com.revature.services.UserService;
 import com.revature.services.VehicleService;
 import com.revature.util.AuthUtil;
@@ -44,47 +47,57 @@ public class VehicleController {
 	}
 	
 	@GetMapping("/{id}")
-	public Vehicle getVehicle(@RequestHeader("Authorization") String token, @PathVariable int id) {
+	public VehicleData getVehicle(@RequestHeader("Authorization") String token, @PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return vehicleService.getVehicle(id);
+        return new VehicleData(vehicleService.getVehicle(id));
 	}
 	
 	@GetMapping("/user/{userId}")
-	public List<Vehicle> getUserVehicles(@RequestHeader("Authorization") String token, @PathVariable int userId) {
+	public List<VehicleData> getUserVehicles(@RequestHeader("Authorization") String token, @PathVariable int userId) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return vehicleService.getUserVehicles(userId);
+        List<VehicleData> vds = new ArrayList<>();
+        List<Vehicle> vs = vehicleService.getUserVehicles(userId);
+        for(Vehicle v:vs) {
+        	vds.add(new VehicleData(v));
+        }
+        return vds;
 	}
 	
 	@GetMapping("/{id}/servicereports")
-	public List<ServiceReport> getVehicleServiceReports(@RequestHeader("Authorization") String token, @PathVariable int id) {
+	public List<ServiceReportData> getVehicleServiceReports(@RequestHeader("Authorization") String token, @PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return vehicleService.getVehicleServiceReports(id);
+        List<ServiceReportData> srds = new ArrayList<>();
+        List<ServiceReport> srs = vehicleService.getVehicleServiceReports(id);
+        for(ServiceReport sr:srs) {
+        	srds.add(new ServiceReportData(sr));
+        }
+        return srds;
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Vehicle createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
+	public VehicleData createVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         vehicle.setUser(userService.getUser(cred.getId()));
-		return vehicleService.createVehicle(vehicle);
+		return new VehicleData(vehicleService.createVehicle(vehicle));
 	}
 	
 	@PutMapping
-	public Vehicle updateVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
+	public VehicleData updateVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return vehicleService.updateVehicle(vehicle);
+        return new VehicleData(vehicleService.updateVehicle(vehicle));
 	}
 	
 	@DeleteMapping
-	public Vehicle deleteVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
+	public VehicleData deleteVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        return vehicleService.deleteVehicle(vehicle);
+        return new VehicleData(vehicleService.deleteVehicle(vehicle));
 	}
 
 }
