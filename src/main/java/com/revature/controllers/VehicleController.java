@@ -90,6 +90,10 @@ public class VehicleController {
 	public VehicleData updateVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        Vehicle oldVehicle = vehicleService.getVehicle(vehicle.getId());
+        vehicle.setUser(oldVehicle.getUser());
+        if(oldVehicle.getPhoto() != null) vehicle.setPhoto(oldVehicle.getPhoto());
+        if(oldVehicle.getInsurance() != null) vehicle.setInsurance(oldVehicle.getInsurance());
         return new VehicleData(vehicleService.updateVehicle(vehicle));
 	}
 	
