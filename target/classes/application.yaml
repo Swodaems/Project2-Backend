@@ -3,9 +3,9 @@ server:
 
 spring:  application:    name: Project2-Backend
   # Database Credentials
-  datasource:    username: ${P2U}
-    password: ${P2P}
-    url: jdbc:postgresql://database-1.ca5zmwzvmpcx.us-east-2.rds.amazonaws.com:5432/postgres
+  datasource:    username: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/postgres
   # hbm2ddl 
   jackson:    serialization:      fail-on-empty-beans: false
   jpa:

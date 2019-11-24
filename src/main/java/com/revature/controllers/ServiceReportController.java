@@ -68,7 +68,7 @@ public class ServiceReportController {
 			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		ServiceReport oldReport = serviceReportService.getServiceReportById(serviceReport.getId());
 		serviceReport.setVehicle(oldReport.getVehicle());
-		serviceReport.setTime(oldReport.getTime());
+//		serviceReport.setTime(oldReport.getTime());
 		if (oldReport.getUser() != null && serviceReport.getUser() == null)
 			serviceReport.setUser(oldReport.getUser());
 		if (oldReport.getUserNote() != null && serviceReport.getUserNote() == null)

@@ -26,7 +26,7 @@ public class ServiceReportRepository {
 
 	public ServiceReport update(@Valid ServiceReport serviceReport) {
 		Session session = em.unwrap(Session.class);
-		session.update(serviceReport);
+		session.merge(serviceReport);
 		return serviceReport;
 	}
 
