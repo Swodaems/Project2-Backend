@@ -108,10 +108,11 @@ public class VehicleController {
         return new VehicleData(vehicleService.updateVehicle(vehicle));
 	}
 	
-	@DeleteMapping
-	public VehicleData deleteVehicle(@RequestHeader("Authorization") String token, @RequestBody @Valid Vehicle vehicle) {
+	@DeleteMapping("/id")
+	public VehicleData deleteVehicle(@RequestHeader("Authorization") String token, @PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
         if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        Vehicle vehicle = vehicleService.getVehicle(id);
         return new VehicleData(vehicleService.deleteVehicle(vehicle));
 	}
 

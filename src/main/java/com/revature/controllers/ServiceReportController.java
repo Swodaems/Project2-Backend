@@ -90,12 +90,13 @@ public class ServiceReportController {
 		return new ServiceReportData(serviceReportService.getServiceReportById(id));
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	public ServiceReportData deleteServiceReport(@RequestHeader("Authorization") String token,
-			@RequestBody @Valid ServiceReport serviceReport) {
+			@PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
 		if (cred == null)
 			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		ServiceReport serviceReport=serviceReportService.getServiceReportById(id);
 		return new ServiceReportData(serviceReportService.deleteServiceReport(serviceReport));
 	}
 

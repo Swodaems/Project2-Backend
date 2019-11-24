@@ -58,10 +58,11 @@ public class CompanyController {
 		return companyService.updateCompany(company);
 	}
 	
-	@DeleteMapping
-	public Company deleteCompany(@RequestBody @Valid Company company, @RequestHeader("Authorization") String token) {
+	@DeleteMapping("/{id}")
+	public Company deleteCompany(@PathVariable int id, @RequestHeader("Authorization") String token) {
 		Creds cred = authUtil.parseJWT(token);
 		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		Company company=companyService.getCompanyById(id);
 		return companyService.deleteCompany(company);
 	}
 }
