@@ -52,6 +52,17 @@ public class UserRepository {
 		Hibernate.initialize(services);
 		return Optional.of(services);
 	}
+	public Optional<List<ServiceReport>> getTechnicianReports(int id) {
+		Session session = em.unwrap(Session.class);
+		User user = session.get(User.class, id);
+		
+		if (user == null) 
+			return Optional.empty();
+		
+		List<ServiceReport> serviceReports = user.getServices();
+		Hibernate.initialize(serviceReports);
+		return Optional.of(serviceReports);
+	}
 
 
 	public User create(User user) {
@@ -100,5 +111,14 @@ public class UserRepository {
 		Session session = em.unwrap(Session.class);
 		session.delete(user);
 		return user;
+	}
+	public Optional<User> addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Session session = em.unwrap(Session.class);
+		User user = session.get(User.class, id);
+		if(user == null) return null;
+		user.setPhoto(url);
+		session.merge(user);
+		return Optional.ofNullable(user);
 	}
 }

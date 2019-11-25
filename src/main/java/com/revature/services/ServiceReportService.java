@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.revature.entities.ServiceReport;
+import com.revature.entities.Vehicle;
 import com.revature.repositories.ServiceReportRepository;
 
 @Service
 public class ServiceReportService {
-	
+
 	ServiceReportRepository serviceReportRepository;
 	VehicleService vehicleService;
 
@@ -39,14 +40,19 @@ public class ServiceReportService {
 
 	public ServiceReport getServiceReportById(int id) {
 		Optional<ServiceReport> optionalServiceReport = serviceReportRepository.get(id);
-		
-		return optionalServiceReport.orElseThrow(
-				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+		return optionalServiceReport.orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
 
 	@Transactional
 	public ServiceReport deleteServiceReport(@Valid ServiceReport serviceReport) {
 		return serviceReportRepository.delete(serviceReport);
+	}
+
+	public ServiceReport addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Optional<ServiceReport> optionalServiceReport = serviceReportRepository.addPhoto(id, url);
+		return optionalServiceReport.orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
 
 }

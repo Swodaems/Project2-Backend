@@ -85,6 +85,12 @@ public class UserService {
 		return optionalServiceReports.orElseThrow(
 				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
+	public List<ServiceReport> getTechnicianReportsByUserId(int id) {
+		Optional<List<ServiceReport>> optionalServiceReports = 
+					userRepository.getTechnicianReports(id);
+		return optionalServiceReports.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+	}
 	public User getUser(int id) {
 		Optional<User> optionalUser = 
 				userRepository.getById(id);
@@ -153,6 +159,14 @@ public class UserService {
 	@Transactional
 	public User deleteUser(@Valid User user) {
 		return userRepository.delete(user);
+	}
+
+	public User addPhoto(int id, String url) {
+		// TODO Auto-generated method stub
+		Optional<User> optionalUser = 
+				userRepository.addPhoto(id,url);
+		return optionalUser.orElseThrow(
+				() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
 	}
 
 }

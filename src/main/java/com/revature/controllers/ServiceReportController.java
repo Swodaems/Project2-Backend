@@ -3,6 +3,7 @@ package com.revature.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +21,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.revature.entities.ServiceReport;
 import com.revature.models.Creds;
 import com.revature.models.ServiceReportData;
+import com.revature.models.VehicleData;
 import com.revature.services.ServiceReportService;
 import com.revature.util.AuthUtil;
+import com.revature.util.PhotoUtil;
 
 @RestController
 @RequestMapping("/servicereports/")
@@ -48,7 +51,15 @@ public class ServiceReportController {
 		System.out.println(serviceReport);
 		return new ServiceReportData(serviceReportService.createServiceReport(serviceReport));
 	}
-
+	@PostMapping("/{id}/photo")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ServiceReportData AddPhoto(@RequestHeader("Authorization") String token, @PathVariable int id, HttpEntity<byte[]> requestEntity) {
+		Creds cred = authUtil.parseJWT(token);
+		if(cred == null) throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		String url=PhotoUtil.uploadPhoto(requestEntity.getBody());
+		
+		return new ServiceReportData(serviceReportService.addPhoto(id,url));
+	}
 	@PutMapping
 	public ServiceReportData updateServiceReport(@RequestHeader("Authorization") String token,
 			@RequestBody @Valid ServiceReport serviceReport) {
@@ -57,7 +68,7 @@ public class ServiceReportController {
 			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
 		ServiceReport oldReport = serviceReportService.getServiceReportById(serviceReport.getId());
 		serviceReport.setVehicle(oldReport.getVehicle());
-		serviceReport.setTime(oldReport.getTime());
+//		serviceReport.setTime(oldReport.getTime());
 		if (oldReport.getUser() != null && serviceReport.getUser() == null)
 			serviceReport.setUser(oldReport.getUser());
 		if (oldReport.getUserNote() != null && serviceReport.getUserNote() == null)
@@ -79,12 +90,13 @@ public class ServiceReportController {
 		return new ServiceReportData(serviceReportService.getServiceReportById(id));
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	public ServiceReportData deleteServiceReport(@RequestHeader("Authorization") String token,
-			@RequestBody @Valid ServiceReport serviceReport) {
+			@PathVariable int id) {
 		Creds cred = authUtil.parseJWT(token);
 		if (cred == null)
 			throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+		ServiceReport serviceReport=serviceReportService.getServiceReportById(id);
 		return new ServiceReportData(serviceReportService.deleteServiceReport(serviceReport));
 	}
 
