@@ -59,7 +59,7 @@ public class UserRepository {
 		if (user == null) 
 			return Optional.empty();
 		
-		List<ServiceReport> serviceReports = user.getServices();
+		List<ServiceReport> serviceReports = user.getServiceReports();
 		Hibernate.initialize(serviceReports);
 		return Optional.of(serviceReports);
 	}
